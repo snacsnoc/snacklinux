@@ -1,0 +1,16 @@
+/dev/ram0 /      ext2    defaults     0      0
+proc  /proc      proc    defaults     0      0 
+sysfs /sys       sysfs   defaults     0      0
+none  /dev/pts   devpts  gid=5,mode=620 0    0
+
+#proc            /proc           proc    defaults        0       0
+#none            /tmp            tmpfs   defaults        0       0
+#none            /var            tmpfs   defaults        0       0
+#sysfs           /sys            sysfs   defaults        0       0
+#shm             /dev/shm        tmpfs   defaults        0       0
+#devpts          /dev/pts        devpts  defaults        0       0
+
+
+
+
+

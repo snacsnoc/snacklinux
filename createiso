@@ -1,0 +1,19 @@
+#!/bin/bash
+# Copyright (c) GPL 2005 Mike Chirico
+#
+#  Simple script to create .img file and copy
+#  contents of _install
+#
+#   bs*count=Megs of RAM                         
+dd if=/dev/zero of=images/initrd.img bs=1k count=64000
+#
+/sbin/mke2fs -F -v -m0 images/initrd.img
+mount -o loop images/initrd.img ./cdrom
+chmod 4755 ./_install/bin/busybox
+cp -av _install/* ./cdrom/.
+umount ./cdrom
+gzip -9 < images/initrd.img > images/initrd.bin
+cp images/initrd.bin boot/isolinux/initrd.bin 
+#genisoimage -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/cdrom_linux_i386.iso staging_iso_image/boot
+genisoimage -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/cdrom_linux_i386.iso boot
+

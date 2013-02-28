@@ -1,0 +1,15 @@
+Choose an option
+
+   1) Text mode
+   2) Text mode (NRD)
+   3) 800x600 x 16bit
+   4) 1024x768 x 16bit
+   5) Set own resolution
+
+
+ Copyright GPL (c) Mike Chirico 
+ (mchirico@users.sourceforge.net) 
+ 
+ This is TDLinux
+ (easton@geekness.eu)
+

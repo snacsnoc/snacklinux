@@ -1,0 +1,36 @@
+#!/bin/sh
+/bin/mount -a
+# Mount for read and write
+/bin/mount -o rw,remount /
+#
+# Network interfaces
+#
+
+# Now required fs-paths (/proc /sys) are ready to enable mdev
+#echo /sbin/mdev > /proc/sys/kernel/hotplug
+#mdev -s
+
+
+ifconfig eth0 0.0.0.0
+#/sbin/udhcpc
+# Set lo
+ifconfig lo 127.0.0.1
+
+# Turn on logging
+/sbin/syslogd
+
+#
+HOSTNAME=tdlinux
+hostname $HOSTNAME
+
+
+echo
+echo "--------------------------------------------------------------"
+echo "Welcome to $HOSTNAME!"
+echo
+echo "Kernel release: `uname -s` `uname -r`"
+echo "Kernel version: `uname -v`"
+echo
+echo "Password for root is root"
+echo "--------------------------------------------------------------"
+echo
