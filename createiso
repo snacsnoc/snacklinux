@@ -19,5 +19,5 @@ umount ./cdrom
 gzip -9 < images/initrd.img > images/initrd.bin
 cp images/initrd.bin boot/isolinux/initrd.bin 
 
-genisoimage -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/cdrom_linux_i386.iso boot
+genisoimage -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/snacklinux_i386.iso boot
 

@@ -10,6 +10,7 @@ Choose an option
  Copyright GPL (c) Mike Chirico 
  (mchirico@users.sourceforge.net) 
  
- This is TDLinux
+ This is SnackLinux
  (easton@geekness.eu)
 
+ Kernel 3.8.2 (Mar 04 2013)
