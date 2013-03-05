@@ -7,8 +7,8 @@
 #
 
 # Now required fs-paths (/proc /sys) are ready to enable mdev
-#echo /sbin/mdev > /proc/sys/kernel/hotplug
-#mdev -s
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+mdev -s
 
 
 ifconfig eth0 0.0.0.0
