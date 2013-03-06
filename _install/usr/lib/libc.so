@@ -1,0 +1,6 @@
+/* GNU ld script
+ * Use the shared library, but some functions are only in
+ * the static library, so try that secondarily. */
+OUTPUT_FORMAT("elf32-i386", "elf32-i386",
+	      "elf32-i386")
+GROUP ( /usr/i386-linux-uclibc/lib/libc.so.0 /usr/i386-linux-uclibc/usr/lib/uclibc_nonshared.a AS_NEEDED ( /usr/i386-linux-uclibc/lib/ld-uClibc.so.0 ) )

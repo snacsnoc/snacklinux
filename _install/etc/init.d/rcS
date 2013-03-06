@@ -20,7 +20,7 @@ ifconfig lo 127.0.0.1
 /sbin/syslogd
 
 #
-HOSTNAME=tdlinux
+HOSTNAME=snacklinux
 hostname $HOSTNAME
 
 
