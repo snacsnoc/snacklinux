@@ -7,8 +7,10 @@
 #   bs*count=Megs of RAM                         
 dd if=/dev/zero of=images/initrd.img bs=1k count=128000
 #
-#/sbin/mke2fs -F -v -m0 images/initrd.img
 /sbin/mke2fs -t ext3 -F -v -m0 images/initrd.img
+
+
+mkdir -p iso cdrom
 
 mount -o loop images/initrd.img ./cdrom
 chmod 4755 ./_install/bin/busybox
