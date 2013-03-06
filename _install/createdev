@@ -5,23 +5,18 @@ cp -avp /dev/fd0   dev
 cp -avp /dev/null   dev
 cp -avp /dev/ptmx   dev
 cp -avp /dev/pts   dev
-#cp -avp /dev/ram1   dev
-#cp -avp /dev/ram2   dev
-#cp -avp /dev/ram3   dev
+cp -avp /dev/ram0   dev
 cp -avp /dev/random   dev
 cp -avp /dev/stderr   dev
 cp -avp /dev/stdin   dev
 cp -avp /dev/stdout   dev
 mknod -m 644 dev/tty c 5 0
-mknod -m 660 dev/ram0 b 1 1
 mknod -m 644 dev/tty0 c 4 0
 mknod -m 644 dev/tty1 c 4 1 
 mknod -m 644 dev/tty2 c 4 2
 mknod -m 644 dev/tty3 c 4 3
 mknod -m 644 dev/tty4 c 4 4
 mknod -m 644 dev/tty5 c 4 5
-#mknod -m 644 dev/tty1 c 4 6
-#mknod -m 644 dev/tty1 c 4 7
 cp -avp /dev/urandom   dev
 cp -avp /dev/vcs   dev
 cp -avp /dev/zero dev
