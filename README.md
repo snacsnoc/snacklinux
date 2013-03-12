@@ -22,6 +22,9 @@ Be sure to run `./_install/createdev` to create the correct `/dev` files.
 2. Compile with `CC='i686-linux-cc' make` (again, if the target is x86)
 3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
+##### Bash
+Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc
+
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
 
