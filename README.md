@@ -3,18 +3,19 @@ SnackLinux
 
 Introduction
 ------------
-SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox and uClibc. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
+SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox, uClibc and binutils. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
 
 
 
 Building
 --------
+Note:
 Be sure to run `./_install/createdev` to create the correct `/dev` files.
 
 
 ##### Toolchain
 1. Download and compile buildroot with large file support and RPC for i686 (if target is x86)
-2. Set path to path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH}
+2. Set path to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH}
 3. Compile everything with `CC='i686-linux-cc' make`
 
 ##### BusyBox

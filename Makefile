@@ -19,7 +19,7 @@ all: iso
 
 
 iso: 
-	mkdir iso cdrom images
+	mkdir -p iso cdrom images
 	dd if=/dev/zero of=images/initrd.img bs=1k count=128000
 	/sbin/mke2fs -t ext3 -F -v -m0 images/initrd.img
 	mount -o loop images/initrd.img ./cdrom
