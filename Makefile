@@ -2,8 +2,9 @@ GENISOIMAGE=/usr/bin/genisoimage
 MAKE=/usr/bin/make
 GIT=/usr/bin/git
 
+NOW=`date +'%d.%m.%y'`
 
-CDIMAGE=snacklinux_i386.iso
+CDIMAGE=snacklinux_i386
 
 GIT_URL=git@github.com:snacsnoc/snacklinux.git
 
@@ -12,15 +13,15 @@ KERNEL_CANONICAL=38
 
 ARCH=x86
 
-.PHONY: all iso kernel
+.PHONY: all iso kernel 
 
 all: iso
 
 
 iso: 
+	mkdir iso cdrom images
 	dd if=/dev/zero of=images/initrd.img bs=1k count=128000
 	/sbin/mke2fs -t ext3 -F -v -m0 images/initrd.img
-	mkdir -p iso cdrom
 	mount -o loop images/initrd.img ./cdrom
 	chmod 4755 ./_install/bin/busybox
 	cp -av _install/* ./cdrom/.
@@ -28,7 +29,7 @@ iso:
 	gzip -9 < images/initrd.img > images/initrd.bin
 	cp images/initrd.bin boot/isolinux/initrd.bin 
 
-	$(GENISOIMAGE) -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE) boot
+	$(GENISOIMAGE) -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
 
 clean:
 	rm -rf iso
