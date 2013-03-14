@@ -19,7 +19,7 @@ Be sure to run `./_install/createdev` to create the correct `/dev` files.
 3. Compile everything with `CC='i686-linux-cc' make`
 
 ##### BusyBox
-1. Clone this git repo and copy busybox-x.y/.config 
+1. Clone this git repo and [busybox-1.21.0/.config](busybox-1.21.0/.config)
 2. Compile with `CC='i686-linux-cc' make` (again, if the target is x86)
 3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
@@ -32,6 +32,9 @@ Run `make kernel`. This will compile the kernel.
 ##### ISO image
 Run `make iso`. The output ISO will be in `iso/`
 
+Download
+--------------
+You can download ISOs of SnackLinux __[here](http://devhax.asia/snacklinux/iso/)__. The ISOs are named in _month.day.year_ format.
 
 Packages
 -------
