@@ -34,7 +34,7 @@ Run `make iso`. The output ISO will be in `iso/`
 
 Download
 --------------
-You can download ISOs of SnackLinux __[here](http://devhax.asia/snacklinux/iso/)__. The ISOs are named in _month.day.year_ format.
+You can download ISOs of SnackLinux __[here](http://gelat.in/snacklinux/iso/)__. The ISOs are named in _month.day.year_ format.
 
 Packages
 -------
