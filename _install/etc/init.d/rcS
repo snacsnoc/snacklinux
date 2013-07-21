@@ -1,7 +1,14 @@
 #!/bin/sh
-/bin/mount -a
+
+# Mount /proc
+[ -f /proc/cmdline ] || /bin/mount /proc
+
 # Mount for read and write
 /bin/mount -o rw,remount /
+
+# Mount system devices from /etc/fstab.
+/bin/mount -a
+
 #
 # Network interfaces
 #
