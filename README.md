@@ -10,7 +10,7 @@ SnackLinux is my experimentation with creating a functional Linux distribution. 
 Building
 --------
 Note:
-Be sure to run `./_install/createdev` to create the correct `/dev` files.
+Be sure to run `./createdev` to create the correct `/dev` files.
 
 
 ##### Toolchain
@@ -48,8 +48,9 @@ Hacking
 Edit anything in `_install`, it is the root filesystem.
 The kernel can also be recompiled to fit your needs. 
 
-The `boot/` directory is where ISOLINUX resides, edit the menu to adjust to your needs.
+The `boot/isolinux` directory is where ISOLINUX resides, edit the menu to adjust to your needs.
 
 Thanks
 ------
-Thanks to Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
+Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
+Tiny Core Linux distrobution for inspiration and documentation http://http://tinycorelinux.net
