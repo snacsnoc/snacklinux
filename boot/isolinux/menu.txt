@@ -1,10 +1,9 @@
 Choose an option
 
    1) Text mode
-   2) Text mode (NRD)
-   3) 800x600 x 16bit
-   4) 1024x768 x 16bit
-   5) Set own resolution
+   2) 800x600 x 16bit
+   3) 1024x768 x 16bit
+   4) Set own resolution
 
 
  Copyright GPL (c) Mike Chirico 
@@ -13,4 +12,4 @@ Choose an option
  This is SnackLinux
  (easton@geekness.eu)
 
- Kernel 3.8.2 (Mar 04 2013)
+ Kernel 3.10.1 (July 21 2013)
