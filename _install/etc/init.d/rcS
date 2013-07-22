@@ -4,7 +4,7 @@
 [ -f /proc/cmdline ] || /bin/mount /proc
 
 # Mount for read and write
-/bin/mount -o rw,remount /
+/bin/mount -o remount,rw  /
 
 # Mount system devices from /etc/fstab.
 /bin/mount -a
@@ -12,11 +12,6 @@
 #
 # Network interfaces
 #
-
-# Now required fs-paths (/proc /sys) are ready to enable mdev
-echo /sbin/mdev > /proc/sys/kernel/hotplug
-mdev -s
-
 
 ifconfig eth0 0.0.0.0
 #/sbin/udhcpc

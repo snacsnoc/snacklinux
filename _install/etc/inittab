@@ -4,7 +4,6 @@
 #       
 # Automatic login for root
 ::respawn:/bin/login -f root </dev/tty1 >/dev/tty1 2>&1
-
 #        
 # /sbin/getty invocations for selected ttys
 #
