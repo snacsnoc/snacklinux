@@ -3,7 +3,7 @@ SnackLinux
 
 Introduction
 ------------
-SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox, uClibc, binutils and tcc. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
+SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox, uClibc and binutils. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
 
 
 Building
