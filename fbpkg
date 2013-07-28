@@ -121,7 +121,7 @@ else
 
         case "$1" in
 
-                -h|--help|helpa)
+                -h|--help)
                         echo "fbpkg - Fabulous Bash package manager"
                         echo " "
                         echo "options:"
@@ -240,7 +240,7 @@ else
                         ;;        
                 "")
                         
-                        echo "Invalid argument"
+                        echo "Invalid argument, please run fbpkg --help"
                         exit
                         ;;       
 
