@@ -23,7 +23,7 @@ Be sure to run `./createdev` to create the correct `/dev` files.
 3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
-Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc
+Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
 
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
@@ -54,4 +54,5 @@ The `boot/isolinux` directory is where ISOLINUX resides, edit the menu to adjust
 Thanks
 ------
 Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
+
 Tiny Core Linux distrobution for inspiration and documentation http://http://tinycorelinux.net
