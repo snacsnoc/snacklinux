@@ -6,7 +6,6 @@ Introduction
 SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox, uClibc, binutils and tcc. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
 
 
-
 Building
 --------
 Note:
@@ -32,9 +31,11 @@ Run `make kernel`. This will compile the kernel.
 ##### ISO image
 Run `make iso`. The output ISO will be in `iso/`
 
+Note: you do not have to have the toolchain to create the ISO
+
 Download
 --------------
-You can download ISOs of SnackLinux __[here](http://gelat.in/snacklinux/iso/)__. The ISOs are named in _month.day.year_ format.
+You can download ISOs of SnackLinux __[here](http://gelat.in/snacklinux/iso/)__. The ISOs are named in _day.month.year_ format.
 
 Packages
 -------
