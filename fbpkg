@@ -142,18 +142,23 @@ else
                                         packages+=("$line")
                                 done < $PACKAGES_PATH
 
-                                # Dirty way of checking of the package we want to install is in the package list file
+                                # Use grep to check if the package we want to install is in the package list
+                                if ! grep -q "$2"  $PACKAGES_PATH; then
+                                    echo "$2 not found in package list"
+                                    exit
+                                fi
+
+                                # This is terrible and should be rewritten but it works
                                 for i in "${packages[@]}"; do
                                 
                                         package_name="$(echo "$i" | awk '{print $1}')"
                                         package_version="$(echo "$i" | awk '{print $2}')"
 
-                                        if [ $package_name == "$2" ] ; then
-                                                echo "Found $2 in package list"    
-                                                break
+                                        if [ $package_name == "$2" ]; then
+                                            echo "Found $2 in package list"    
+                                            break
                                         else
-                                                echo "$2 not found "
-                                                exit
+                                            continue
                                         fi
                                 done
                                 
