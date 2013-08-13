@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1
+VERSION=0.1.1
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
@@ -126,11 +126,19 @@ else
                         echo " "
                         echo "options:"
                         echo -e "-h, --help \t\t\t show brief help"
+                        echo -e "-v, --version \t\t\t show version info"
                         echo -e "install <package> \t\t install a package"
                         echo -e "remove <package> \t\t remove a package"
                         echo -e "update \t\t\t\t update installable packages list "
                         exit 
                         ;;
+
+                -v|--version)
+                        echo "fbpkg - Fabulous Bash package manager $VERSION"
+                        echo " "
+                        echo "Copyright (c) 2013 Easton Elliott <easton@geekness.eu>"
+                        exit 
+                        ;;                        
 
                 install)
         
