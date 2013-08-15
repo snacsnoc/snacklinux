@@ -13,17 +13,17 @@ Be sure to run `./createdev` to create the correct `/dev` files.
 
 
 ##### Toolchain
-1. Download and compile buildroot with large file support and RPC for i686 (if target is x86)
-2. Set path to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH}
-3. Compile everything with `CC='i686-linux-cc' make`
+1. Download buildroot and place this file [buildroot-2013.05/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.05/.config) in the buildroot directory. Or, optionally compile buildroot with large file support and RPC for i686 (if target is x86)
+2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the toolchain
 
 ##### BusyBox
-1. Clone this git repo and [busybox-1.21.0/.config](busybox-1.21.0/.config)
+1. Clone this git repo and [busybox-1.21.0/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.0/.config)
 2. Compile with `CC='i686-linux-cc' make` (again, if the target is x86)
 3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
-Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
+1. Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
+2. Run `CC='i686-linux-cc' make` (to use the toolchain), then `make install`
 
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
@@ -41,7 +41,7 @@ Packages
 -------
 ##### Generic building instruction
 1. Set `./configure --prefix` or `make PREFIX= install` to `../_install` to install to the root filesystem
-2. Compile staticly with toolchain and try to `--disable-nls` with most packages
+2. Compile staticly with toolchain and try to disable extraneous libraries
 3. Test!
 
 Hacking
