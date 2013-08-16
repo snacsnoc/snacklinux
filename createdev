@@ -2,6 +2,8 @@
 #
 # Create device files
 
+mkdir -v _install/dev
+
 mknod -m 600 _install/dev/console c 5 1
 mknod -m 666 _install/dev/full c 1 7
 mknod -m 666 _install/dev/kmem c 1 2
