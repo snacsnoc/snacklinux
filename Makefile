@@ -18,7 +18,7 @@ all: iso
 
 
 iso: 
-	mkdir -p iso
+	mkdir -p iso boot/isolinux
 	cd _install/; find . -print | cpio -o -H newc --quiet | gzip -2 > ../rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
