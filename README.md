@@ -10,6 +10,7 @@ Building
 --------
 Note:
 Be sure to run `./createdev` to create the correct `/dev` files.
+It's recommended to build SnackLinux on a 32-bit host, so there's no need to mess around with multilib packages.
 
 
 ##### Toolchain
@@ -17,13 +18,16 @@ Be sure to run `./createdev` to create the correct `/dev` files.
 2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the toolchain
 
 ##### BusyBox
-1. Clone this git repo and [busybox-1.21.0/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.0/.config)
+1. Clone this git repo or just get the [busybox-1.21.0/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.0/.config) file and place it in the busybox-1.21.0 directory
 2. Compile with `CC='i686-linux-cc' make` (again, if the target is x86)
 3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
-1. Compile Bash with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
+1. Compile Bash 4.2 with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
 2. Run `CC='i686-linux-cc' make` (to use the toolchain), then `make install`
+
+#### Syslinux
+You can either copy `isolinux.bin` from your distribution in `/var/lib/syslinux` or compile it yourself. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` to `snacklinux/boot/isolinux`. 
 
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
