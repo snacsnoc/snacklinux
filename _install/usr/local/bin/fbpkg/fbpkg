@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1
+VERSION=0.1.1
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
@@ -126,11 +126,19 @@ else
                         echo " "
                         echo "options:"
                         echo -e "-h, --help \t\t\t show brief help"
+                        echo -e "-v, --version \t\t\t show version info"
                         echo -e "install <package> \t\t install a package"
                         echo -e "remove <package> \t\t remove a package"
                         echo -e "update \t\t\t\t update installable packages list "
                         exit 
                         ;;
+
+                -v|--version)
+                        echo "fbpkg - Fabulous Bash package manager $VERSION"
+                        echo " "
+                        echo "Copyright (c) 2013 Easton Elliott <easton@geekness.eu>"
+                        exit 
+                        ;;                        
 
                 install)
         
@@ -142,18 +150,23 @@ else
                                         packages+=("$line")
                                 done < $PACKAGES_PATH
 
-                                # Dirty way of checking of the package we want to install is in the package list file
+                                # Use grep to check if the package we want to install is in the package list
+                                if ! grep -q "$2"  $PACKAGES_PATH; then
+                                    echo "$2 not found in package list"
+                                    exit
+                                fi
+
+                                # This is terrible and should be rewritten but it works
                                 for i in "${packages[@]}"; do
                                 
                                         package_name="$(echo "$i" | awk '{print $1}')"
                                         package_version="$(echo "$i" | awk '{print $2}')"
 
-                                        if [ $package_name == "$2" ] ; then
-                                                echo "Found $2 in package list"    
-                                                break
+                                        if [ $package_name == "$2" ]; then
+                                            echo "Found $2 in package list"    
+                                            break
                                         else
-                                                echo "$2 not found "
-                                                exit
+                                            continue
                                         fi
                                 done
                                 
