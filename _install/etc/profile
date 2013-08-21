@@ -6,8 +6,11 @@ export HOME=/root
 
 # Set default user file-creation mask
 # (u=rwx,g=rx,o=rx)
-#
+
 umask 0022
+
+#Add PS1
+PS1="[\h:\w]\$"
 
 # Setup path
 
