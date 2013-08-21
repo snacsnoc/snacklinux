@@ -14,6 +14,8 @@ mknod -m 444 _install/dev/random c 1 8
 mknod -m 444 _install/dev/urandom c 1 9
 mknod -m 666 _install/dev/zero c 1 5
 mknod -m 666 _install/dev/ram0 b 1 0
+mknod -m 666 _install/dev/ptmx c 5 2
+
 
 #Only create two hard drive devs, more can be added
 mknod -m 644 _install/dev/hda b 3 0
