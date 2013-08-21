@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1.1
+VERSION=0.1.2
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
@@ -170,6 +170,9 @@ else
                                         fi
                                 done
                                 
+                                # Check if the package is already installed and prompt user to reinstall
+                                check_if_installed $package_name $package_version
+
                                 echo "Installing version $package_version"
 
                                 # Download the package
@@ -177,10 +180,6 @@ else
 
                                 # Check if wget had any issues downloading the packages
                                 get_wget_status_code $?
-
-                                # Check if the package is already installed and prompt user to reinstall
-                                check_if_installed $package_name $package_version
-                                        
 
                                 # Extract files
                                 $TAR -xvf /tmp/$package_name-$package_version.tgz -C /
