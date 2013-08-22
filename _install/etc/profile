@@ -10,7 +10,7 @@ export HOME=/root
 umask 0022
 
 #Add PS1
-PS1="[\h:\w]\$"
+PS1="[\h:\w]\$ "
 
 # Setup path
 
