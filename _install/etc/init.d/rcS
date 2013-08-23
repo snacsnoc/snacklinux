@@ -9,12 +9,12 @@
 # Mount system devices from /etc/fstab.
 /bin/mount -a
 
+/sbin/mdev -s
+
 #
 # Network interfaces
 #
 
-ifconfig eth0 0.0.0.0
-#/sbin/udhcpc
 # Set lo
 ifconfig lo 127.0.0.1
 
