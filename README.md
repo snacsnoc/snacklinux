@@ -18,9 +18,10 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the toolchain
 
 ##### BusyBox
-1. Clone this git repo or just get the [busybox-1.21.0/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.0/.config) file and place it in the busybox-1.21.0 directory
-2. Compile with `CC='i686-linux-cc' make` (again, if the target is x86)
-3. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
+1. Clone this git repo or just get the [busybox-1.21.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.1/.config) file and place it in the busybox-1.21.1 directory
+2. Run `make menuconfig` to change any config value, notable the sysroot path and compiler prefix
+3. Compile with  `make` (again, if the target is x86)
+4. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
 1. Compile Bash 4.2 with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
