@@ -19,8 +19,8 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 
 ##### BusyBox
 1. Clone this git repo or just get the [busybox-1.21.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.1/.config) file and place it in the busybox-1.21.1 directory
-2. Run `make menuconfig` to change any config value, notable the sysroot path and compiler prefix
-3. Compile with  `make` (again, if the target is x86)
+2. Run `make menuconfig` to change any config value, notably the sysroot path and compiler prefix
+3. Compile with  `make`
 4. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
@@ -28,7 +28,7 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 2. Run `CC='i686-linux-cc' make` (to use the toolchain), then `make install`
 
 #### Syslinux
-You can either copy `isolinux.bin` from your distribution in `/var/lib/syslinux` or compile it yourself. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` to `snacklinux/boot/isolinux`. 
+You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` to `snacklinux/boot/isolinux`. 
 
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
@@ -40,7 +40,7 @@ Note: you do not have to have the toolchain to create the ISO
 
 Download
 --------------
-You can download ISOs of SnackLinux __[here](http://gelat.in/snacklinux/iso/)__. The ISOs are named in _day.month.year_ format.
+You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snacklinux/downloads)__. The ISOs are named in _day.month.year_ format.
 
 Packages
 -------
