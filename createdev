@@ -36,3 +36,4 @@ cp -avp /dev/stdin   _install/dev
 cp -avp /dev/stdout   _install/dev
 
 mkdir -v _install/dev/shm
+mkdir -v _install/dev/pts
