@@ -44,10 +44,7 @@ You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snac
 
 Packages
 -------
-##### Generic building instruction
-1. Set `./configure --prefix` or `make PREFIX= install` to `../_install` to install to the root filesystem
-2. Compile staticly with toolchain and try to disable extraneous libraries
-3. Test!
+Read the [Packages wiki page](https://bitbucket.org/snacsnoc/snacklinux/wiki/Packages)
 
 Hacking
 -------
