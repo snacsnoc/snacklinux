@@ -44,7 +44,8 @@ You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snac
 
 Packages
 -------
-Read the [Packages wiki page](https://bitbucket.org/snacsnoc/snacklinux/wiki/Packages)
+Read the [Packages wiki page](https://bitbucket.org/snacsnoc/snacklinux/wiki/Packages) for building packages.
+For SnackLinux's package manager fbpkg, see [here](https://bitbucket.org/snacsnoc/fbpkg).
 
 Hacking
 -------
