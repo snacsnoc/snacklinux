@@ -22,11 +22,10 @@ iso:
 	cd _install/; find . -print | cpio -o -H newc --quiet | gzip -2 > ../rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
-	$(GENISOIMAGE) -l -J -R -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
+	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
 
 clean:
 	rm -rf iso
-	rm -rf cdrom
 	rm -f boot/isolinux/linux*
 
 
