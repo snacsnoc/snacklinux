@@ -28,7 +28,7 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 2. Run `CC='i686-linux-cc' make` (to use the toolchain), then `make install`
 
 #### Syslinux
-You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` to `snacklinux/boot/isolinux`. 
+You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. The recommended version is 5.01. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` and `com32/elflink/ldlinux/ldlinux.c32` to `snacklinux/boot/isolinux`. 
 
 ##### Kernel
 Run `make kernel`. This will compile the kernel.
