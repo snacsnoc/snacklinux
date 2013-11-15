@@ -1,40 +1,39 @@
 #!/bin/bash
 set -e
 
+# Initial population (otherwise mke2fs will have problems formatting)
+mdev -s
+
 export TERMINFO=/share/terminfo
 
-IMAGE_PATH=snack_mnt
+# Set the mount path
+IMAGE_PATH=/root/snack_mnt
 
-########################################
-###### Rudimentary Failsafe for	   #####
-###### MsgBox			   #####
-########################################
 
-msg (){
-type -P dialog 2>/dev/null && msgbx || {
-echo -e  "\033[1;31m There is either a problem with Ncurses or Dialog\033[0m"
-echo -e "\v\t  Format partitions wiping all data:"
+dialog --msgbox \
+"Welcome to SnackLinux.
+We are still adding features to the install script.
+Enjoy the automation while it lasts."  20 50
+
+
+dialog  --yesno "Format partitions wiping all data and install SnackLinux?" 10 50
+        [[ $? != 0 ]] && exit 255
+
 while true; do 
-  read -p "Continue? Y\n" yn
+  read -p "Continue? Y\n " yn
   case $yn in
-	[Y]* ) echo Continuing...; break;;
-	[Nn]* ) echo "exiting"; exit 255;;
-	* ) echo "Y\n" 
+	[Y]* ) echo "Continuing..."; break;;
+	[Nn]* ) echo "Exiting"; exit 255;;
+	* ) echo "Y\n " 
   esac
 done
-}
-}
-msgbx (){
-  dialog  --yesno "Format partitions wiping all data and install SnackLinux?" 10 50
-	[[ $? != 0 ]] && exit 255
-}
+
 	
 # In my humble opinion it'd be nice to clean this up by making some functions
 # in a separate script and then calling them.  That way we can avoid errors
 # easier.  I attempted to, but it became messy.
 
 # Check parameter and path
-
 
 if [ "$#" == "0" ]; then
   echo
@@ -55,15 +54,13 @@ if [ ! -d "$IMAGE_PATH" ]; then
   mkdir $IMAGE_PATH
 fi
 
-# I'll throw the msg function here because this is where it kind of starts
-
-msg
 
 echo
 echo "Installing SnackLinux onto $1"
 echo
 
 # fdisk commands to delete partitons 1-4, create a bootable and secondary partition
+# We're assuming there is only 4 partitions, this should probably be fixed.
 cat > fdisk.in << "EOF"
 d
 1
@@ -100,14 +97,14 @@ mkdosfs "$1"1 > /dev/null 2>&1
 
 
 #Format the second partition
-echo "Formatting $1"2
+echo "Formatting $1"2", this may take some time..."
 mke2fs -j "$1"2 > /dev/null 2>&1
-echo "Mounting $1 as $IMAGE_PATH"2
+echo "Mounting"$1"2 as $IMAGE_PATH"
 mount "$1"2 $IMAGE_PATH  
 
 
 # Make directories and copy files
-
+echo "Entering $IMAGE_PATH"
 cd $IMAGE_PATH
 
 echo "Creating directories"
@@ -119,10 +116,12 @@ cp /init ./
 chmod 755 ./init
 
 cp -a {/bin,/etc,/sbin,/var,/usr,/share} ./
-chmod -R 755 .{/bin,/etc,/home,/sbin,/var,/usr,/share}/*
+chmod -R 755 .{/bin,/etc,/sbin,/var,/usr,/share}/*
 
-cp -a {/lib,/tmp,/usr/lib} ./
-chmod -R 777 .{/lib,/tmp,/usr/lib}/*
+# This could be cleaned up, but it works.
+cp -a /lib ./
+cp -a /usr/lib/* ./usr/lib/
+chmod 777 .{/lib,/usr/lib}/*
 
 echo "Creating device nodes"
 mknod -m 600 dev/console c 5 1
@@ -162,14 +161,15 @@ mkdir -v dev/pts
 echo "Syncing"
 sync
 
+echo "Leaving $IMAGE_PATH"
 cd ..
 
 
 
 
 #Create a lilo conf file so we can install lilo right away
-cat > ./$IMAGE_PATH/etc/lilo.conf << "EOF"
-boot=/dev/sda
+cat > $IMAGE_PATH/etc/lilo.conf <<EOF
+boot=$1
 prompt
 timeout=50
 lba32
@@ -177,7 +177,7 @@ default=snacklinux
 
 image=/boot/bzImage
 	label=snacklinux
-	root=/dev/sda2
+	root=$12
 
 EOF
 
