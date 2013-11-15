@@ -118,7 +118,7 @@ echo "Copying directories"
 cp /init ./
 chmod 755 ./init
 
-cp -a {/bin,/etc,/home,/sbin,/var,/usr,/share} ./
+cp -a {/bin,/etc,/sbin,/var,/usr,/share} ./
 chmod -R 755 .{/bin,/etc,/home,/sbin,/var,/usr,/share}/*
 
 cp -a {/lib,/tmp,/usr/lib} ./
