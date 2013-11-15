@@ -42,6 +42,10 @@ Download
 --------------
 You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snacklinux/downloads)__. The ISOs are named in _day.month.year_ format.
 
+Persistent install
+-----------------
+Run `install-snacklinux.sh` in /root to install to persistent media.
+
 Packages
 -------
 Read the [Packages wiki page](https://bitbucket.org/snacsnoc/snacklinux/wiki/Packages) for building packages.
