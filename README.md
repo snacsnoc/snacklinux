@@ -62,4 +62,4 @@ Thanks
 ------
 Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
 
-Tiny Core Linux distrobution for inspiration and documentation http://http://tinycorelinux.net
+Tiny Core Linux distrobution for inspiration and documentation http://tinycorelinux.net
