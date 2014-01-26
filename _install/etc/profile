@@ -12,11 +12,12 @@ umask 0022
 #Add PS1
 PS1="[\h:\w]\$ "
 
+if [ -f /etc/bash.bashrc ]; then
+      . /etc/bash.bashrc
+fi
+
 # Setup path
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/libexec
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 
-# Aliases
-#
-#alias la="ls -la"
