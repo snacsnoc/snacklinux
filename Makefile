@@ -41,4 +41,4 @@ kernel:
 	
 	$(MAKE) ARCH=$(ARCH) bzImage
 	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux
-	
+	cp arch/$(ARCH)/boot/bzImage ../_install/boot 
