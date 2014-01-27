@@ -8,7 +8,7 @@ CDIMAGE=snacklinux_i386
 
 GIT_URL=git@bitbucket.org:snacsnoc/snacklinux.git
 
-KERNEL_VERSION=3.10.1
+KERNEL_VERSION=3.13
 
 ARCH=x86
 
@@ -39,6 +39,6 @@ kernel:
 	cd linux-$(KERNEL_VERSION)/	
 	cp ../snacklinux/linux-$(KERNEL_VERSION)/.config .
 	
-	$(MAKE) ARCH=$(ARCH) bzImage -j4
+	$(MAKE) ARCH=$(ARCH) bzImage
 	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux
 	
