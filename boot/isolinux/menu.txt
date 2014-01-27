@@ -12,4 +12,4 @@ Choose an option
  This is SnackLinux
  (easton@geekness.eu)
 
- Kernel 3.10.1 (August 23 2013)
+ Kernel 3.13 (Jan 27 2014)
