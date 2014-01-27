@@ -14,8 +14,10 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 
 
 ##### Toolchain
-1. Download buildroot and place this file [buildroot-2013.05/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.05/.config) in the buildroot directory. Or, optionally compile buildroot with large file support and RPC for i686 (if target is x86)
-2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the toolchain
+1. Download buildroot 2013.11 and place this file [buildroot-2013.11/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.11/.config) in the buildroot directory.
+2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the gcc toolchain
+
+Note: you might also want to `export LD_LIBRARY_PATH=/path/to/buildroot-x.x/output/host/usr/i686-buildroot-linux-uclibc/sysroot/usr/lib` so if you do cross compile, you are linking against the correct libs.
 
 ##### BusyBox
 1. Clone this git repo or just get the [busybox-1.21.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.1/.config) file and place it in the busybox-1.21.1 directory
@@ -62,4 +64,4 @@ Thanks
 ------
 Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
 
-Tiny Core Linux distrobution for inspiration and documentation http://tinycorelinux.net
+Tiny Core Linux distribution for inspiration and documentation http://tinycorelinux.net
