@@ -20,9 +20,9 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 Note: you might also want to `export LD_LIBRARY_PATH=/path/to/buildroot-x.x/output/host/usr/i686-buildroot-linux-uclibc/sysroot/usr/lib` so if you do cross compile, you are linking against the correct libs.
 
 ##### BusyBox
-1. Clone this git repo or just get the [busybox-1.21.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.21.1/.config) file and place it in the busybox-1.21.1 directory
-2. Run `make menuconfig` to change any config value, notably the sysroot path and compiler prefix
-3. Compile with  `make`
+1. Clone this git repo or just get the [busybox-1.22.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.22.1/.config) file and place it in the busybox-1.22.1 directory
+2. Run `make menuconfig` to change any config value, notably the sysroot path (CONFIG_SYSROOT) and compiler prefix
+3. Compile `make` and install `make install`
 4. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
