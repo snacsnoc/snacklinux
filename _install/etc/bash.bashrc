@@ -12,7 +12,5 @@ export TERMINFO=/share/terminfo
 # Set our prompt
 PS1='[\[\033[01;32m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
-
 # Yay colours
 alias ls='ls --color=auto'
