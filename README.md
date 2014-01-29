@@ -46,7 +46,7 @@ You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snac
 
 Persistent install
 -----------------
-Run `install-snacklinux.sh` in /root to install to persistent media.
+Run `install-snacklinux.sh` in /root to install to persistent media. Installation uses approximately 38MB of disk space.
 
 Packages
 -------
