@@ -11,7 +11,7 @@ https://bitbucket.org/snacsnoc/fbpkg
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Easton Elliott
+Copyright (c) 2014 Easton Elliott
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,13 +32,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1.2
+VERSION=0.1.3
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
 REPO_URL=http://gelat.in/snacklinux/repo/pub
 PACKAGES_PATH=/var/lib/fbpkg/packageslist
-
+DIFF=/usr/bin/diff
 
 
 
@@ -49,16 +49,15 @@ check_if_installed(){
 
         # Check if package is already installed and prompt user for reinstallation
         if [ -e /var/lib/fbpkg/installed/$package_name-$package_version ]; then
-                echo "$package_name $package_version already installed, reinstall? (y/n)"
 
-                read reinstall
-
-                        if [[ "$reinstall" ==  "y" || "$reinstall" == "yes"  ]]; then
-                                echo "Reinstalling..."
-                        else
-                                echo "Exiting...."
-                                exit
-                        fi
+            while true; do 
+                read -p "$package_name $package_version already installed, reinstall? (y/n) " yn
+                case $yn in
+                    [y]* ) echo "Reinstalling..."; break;;
+                    [Nn]* ) echo "Exiting"; exit 255;;
+                    * ) echo "Y\n " 
+                esac
+            done
 
         fi
 
@@ -97,9 +96,9 @@ get_wget_status_code(){
                         exit
                         ;;
          
-        *)
+                *)
 
-                                esac
+        esac
 
 
 }
@@ -122,21 +121,22 @@ else
         case "$1" in
 
                 -h|--help)
-                        echo "fbpkg - Fabulous Bash package manager"
+                        echo "fbpkg $VERSION - Fabulous Bash package manager "
                         echo " "
                         echo "options:"
                         echo -e "-h, --help \t\t\t show brief help"
                         echo -e "-v, --version \t\t\t show version info"
                         echo -e "install <package> \t\t install a package"
                         echo -e "remove <package> \t\t remove a package"
+                        echo -e "upgrade \t\t\t check for updated packages"
                         echo -e "update \t\t\t\t update installable packages list "
                         exit 
                         ;;
 
                 -v|--version)
-                        echo "fbpkg - Fabulous Bash package manager $VERSION"
+                        echo "fbpkg $VERSION"
                         echo " "
-                        echo "Copyright (c) 2013 Easton Elliott <easton@geekness.eu>"
+                        echo "Copyright (c) 2014 Easton Elliott <easton@geekness.eu>"
                         exit 
                         ;;                        
 
@@ -242,14 +242,60 @@ else
                         ;;
 
                 update)
-
+                        # Update the local packages list
                         $WGET $REPO_URL/packageslist -O /var/lib/fbpkg/packageslist
 
                         get_wget_status_code $?
 
                         exit 
                         shift
-                        ;;        
+                        ;;
+
+                upgrade)  
+                        # This currently doesn't work to upgrade multiple packages. But it works for single packages!
+
+
+                        
+                        # First, we get a list of the installed packages and format it so it's like packageslist file
+                        ls /var/lib/fbpkg/installed | sed -r 's/(.+[a-z])-([0-9].+)/\1 \2/g' > /tmp/installed_packages
+
+                        # We diff the installed packages and the packageslist from the repository and check if it spits out anything  
+
+                        if [[ -z $($DIFF /tmp/installed_packages /var/lib/fbpkg/packageslist | grep '^\-[a-z]') ]]; then
+                            echo "Nothing to upgrade" 
+                        else
+
+                            new_package_name="$($DIFF /tmp/installed_packages /var/lib/fbpkg/packageslist | grep '^\-[a-z]' | cut -c2- | awk '{print $1}')" 
+                            new_package_version="$($DIFF /tmp/installed_packages /var/lib/fbpkg/packageslist | grep '^\-[a-z]' | cut -c2- | awk '{print $2}')"
+                                    
+
+                            # Prompt user (just in case)
+                            while true; do 
+                                read -p "There is an update to $new_package_name to version $new_package_version. Upgrade now? (y\n) " yn
+                                case $yn in
+                                    [y]* ) echo "Upgrading..."; break;;
+                                    [Nn]* ) echo "Exiting"; exit 255;;
+                                    * ) echo "Y\n " 
+                                esac
+                            done
+
+                            echo "Removing old package..."
+                            fbpkg remove $new_package_name
+
+                            echo "Updating packages list..."
+                            fbpkg update 
+
+                            echo "Installing new package..."
+                            fbpkg install $new_package_name
+
+                            echo "Done!"
+                        fi   
+
+                        rm -v /tmp/installed_packages
+                        exit
+                        shift
+                        ;;
+                
                 "")
                         
                         echo "Invalid argument, please run fbpkg --help"
