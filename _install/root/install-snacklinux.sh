@@ -99,6 +99,7 @@ mkdosfs "$1"1 > /dev/null 2>&1
 #Format the second partition
 echo "Formatting $1"2", this may take some time..."
 mke2fs -j "$1"2 > /dev/null 2>&1
+wait
 echo "Mounting"$1"2 as $IMAGE_PATH"
 mount "$1"2 $IMAGE_PATH  
 
