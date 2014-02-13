@@ -39,7 +39,13 @@ mkdir /dev/pts
 mount /dev/pts
 ```
 
-Add `mkdir /dev/pts` to `/etc/init.d/rcS` to make it persist between boots.
+Add
+ 
+```
+mkdir /dev/pts
+mount /dev/pts
+```
+to `/etc/init.d/rcS` to make it persist between boots.
 
 **Installation**
 
