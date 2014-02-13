@@ -6,6 +6,53 @@ Introduction
 SnackLinux is my experimentation with creating a functional Linux distribution. It contains a 3.x kernel with the latest BusyBox, uClibc and binutils. SnackLinux uses uClibc as the C library and ISOLINUX as the bootloader.
 
 
+Quick start
+-----------
+Download the [latest ISO](https://bitbucket.org/snacsnoc/snacklinux/downloads) and boot into SnackLinux.
+
+To set up networking, you can either use a static IP 
+```
+ifconfig eth0 192.168.0.100 netmask 255.255.255.0
+route add default gw 192.168.0.1
+```
+or use `udhcpc` for DHCP.
+
+Run `fbpkg update` to update the latest packages list to check if the network is up.
+
+**SSH**
+
+Install dropbear via fbpkg by running `fbpkg install dropbear`
+
+Then set up the keys:
+```
+mkdir /etc/dropbear && cd /etc/dropbear
+dropbearkey -t rsa -f dropbear_rsa_host_key
+dropbearkey -t dss -f dropbear_dss_host_key
+```
+Now run `dropbear` to start the dropbear SSH server.
+
+If you receive an error such as `PTY allocation request failed on channel 0` when trying to SSH into SnackLinux, try the below:
+
+```
+rm -rf /dev/pts
+mkdir /dev/pts
+mount /dev/pts
+```
+
+Add `mkdir /dev/pts` to `/etc/init.d/rcS` to make it persist between boots.
+
+**Installation**
+
+Run `/root/install-snacklinux.sh /dev/hda` and follow through the prompts to install to persistent media. The installation uses approximately 40 MB of disk space.
+
+**Packages**
+
+To see the available packages, run `cat /var/lib/fbpkg/packageslist`. 
+Use `fbpkg install <package>` or `fbpkg remove <package>` for installation and removal. Run `fbpkg --help` for more information.
+
+***
+
+
 Building
 --------
 Note:
@@ -40,13 +87,6 @@ Run `make iso`. The output ISO will be in `iso/`
 
 Note: you do not have to have the toolchain to create the ISO
 
-Download
---------------
-You can download ISOs of SnackLinux __[here](https://bitbucket.org/snacsnoc/snacklinux/downloads)__. The ISOs are named in _day.month.year_ format.
-
-Persistent install
------------------
-Run `install-snacklinux.sh` in /root to install to persistent media. Installation uses approximately 38MB of disk space.
 
 Packages
 -------
