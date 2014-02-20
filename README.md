@@ -8,7 +8,7 @@ SnackLinux is my experimentation with creating a functional Linux distribution. 
 
 Quick start
 -----------
-Download the [latest ISO](https://bitbucket.org/snacsnoc/snacklinux/downloads) and boot into SnackLinux.
+Download the [latest ISO](http://snacklinux.org/iso) and boot into SnackLinux.
 
 To set up networking, you can either use a static IP 
 ```
@@ -31,7 +31,7 @@ dropbearkey -t dss -f dropbear_dss_host_key
 ```
 Now run `dropbear` to start the dropbear SSH server.
 
-If you receive an error such as `PTY allocation request failed on channel 0` when trying to SSH into SnackLinux, try the below:
+If you receive an error such as `PTY allocation request failed on channel 0` after you have installed when trying to SSH into SnackLinux, try the below:
 
 ```
 rm -rf /dev/pts
@@ -39,13 +39,7 @@ mkdir /dev/pts
 mount /dev/pts
 ```
 
-Add
- 
-```
-mkdir /dev/pts
-mount /dev/pts
-```
-to `/etc/init.d/rcS` to make it persist between boots.
+Add `mkdir /dev/pts` above `/bin/mount -a` in `/etc/init.d/rcS`.
 
 **Installation**
 
@@ -67,7 +61,7 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 
 
 ##### Toolchain
-1. Download buildroot 2013.11 and place this file [buildroot-2013.11/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.11/.config) in the buildroot directory.
+1. Download buildroot 2013.11 and place this file [buildroot-2013.11/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.11/.config) in the buildroot directory and run `make`.
 2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the gcc toolchain
 
 Note: you might also want to `export LD_LIBRARY_PATH=/path/to/buildroot-x.x/output/host/usr/i686-buildroot-linux-uclibc/sysroot/usr/lib` so if you do cross compile, you are linking against the correct libs.

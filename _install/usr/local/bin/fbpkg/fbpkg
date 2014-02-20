@@ -32,11 +32,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1.3
+VERSION=0.1.4
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
-REPO_URL=http://gelat.in/snacklinux/repo/pub
+REPO_URL=http://snacklinux.org/repo/pub
 PACKAGES_PATH=/var/lib/fbpkg/packageslist
 DIFF=/usr/bin/diff
 
