@@ -26,14 +26,14 @@
 # configuration section:
 #	these variables are filled in by the make target in Makefile
 #
-MACHINE="x86_64"
-OS="linux-gnu"
-CC="gcc"
-CFLAGS=" -DPROGRAM='bash' -DCONF_HOSTTYPE='x86_64' -DCONF_OSTYPE='linux-gnu' -DCONF_MACHTYPE='x86_64-unknown-linux-gnu' -DCONF_VENDOR='unknown' -DLOCALEDIR='/home/easto/build/mini/_install/share/locale' -DPACKAGE='bash' -DSHELL -DHAVE_CONFIG_H   -I.  -I. -I./include -I./lib   -g -O2"
-RELEASE="4.2"
+MACHINE="i686"
+OS="linux-uclibc"
+CC="i686-buildroot-linux-uclibc-gcc"
+CFLAGS=" -DPROGRAM='bash' -DCONF_HOSTTYPE='i686' -DCONF_OSTYPE='linux-uclibc' -DCONF_MACHTYPE='i686-buildroot-linux-uclibc' -DCONF_VENDOR='buildroot' -DLOCALEDIR='/home/easto/bash-4.3/_install/share/locale' -DPACKAGE='bash' -DSHELL -DHAVE_CONFIG_H   -I.  -I. -I./include -I./lib -I./lib/intl -I/home/easto/bash-4.3/lib/intl  -g -O2"
+RELEASE="4.3"
 PATCHLEVEL="0"
 RELSTATUS="release"
-MACHTYPE="x86_64-unknown-linux-gnu"
+MACHTYPE="i686-buildroot-linux-uclibc"
 
 PATH=/bin:/usr/bin:/usr/local/bin:$PATH
 export PATH
