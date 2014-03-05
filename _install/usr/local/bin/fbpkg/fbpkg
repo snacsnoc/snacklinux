@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '
 
-VERSION=0.1.4
+VERSION=0.1.5
 
 WGET=/usr/bin/wget
 TAR=/bin/tar
@@ -130,6 +130,9 @@ else
                         echo -e "remove <package> \t\t remove a package"
                         echo -e "upgrade \t\t\t check for updated packages"
                         echo -e "update \t\t\t\t update installable packages list "
+                        echo " "
+                        echo "environment variables:"
+                        echo -e "FB_INSTALL_PATH \t\t Install packages to FB_INSTALL_PATH rather than /"
                         exit 
                         ;;
 
@@ -169,7 +172,12 @@ else
                                             continue
                                         fi
                                 done
-                                
+
+                                # If the environment variable FB_INSTALL_PATH is unset, set to install to /
+                                if [[ -z "$FB_INSTALL_PATH" ]]; then
+                                    FB_INSTALL_PATH="/"
+                                fi
+
                                 # Check if the package is already installed and prompt user to reinstall
                                 check_if_installed $package_name $package_version
 
@@ -182,13 +190,17 @@ else
                                 get_wget_status_code $?
 
                                 # Extract files
-                                $TAR -xvf /tmp/$package_name-$package_version.tgz -C /
+                                $TAR -xvf /tmp/$package_name-$package_version.tgz -C $FB_INSTALL_PATH
+
 
                                 # Check exit code of tar
                                 if [ "$?" ]; then
 
-                                    # Get list of files the package wants to install and write it 
-                                    $TAR ztvf /tmp/$package_name-$package_version.tgz | awk '{print $6}' | grep -E "^.*(\w$)" > /var/lib/fbpkg/installed/$package_name-$package_version
+                                    # Escape slashes when we prefix the path to the list of installed files
+                                    FB_INSTALL_PATH=$(echo $FB_INSTALL_PATH | sed 's/\//\\\//g')
+
+                                    # Get list of files the package wants to install, prefix FB_INSTALL_PATH and write it 
+                                    $TAR ztvf /tmp/$package_name-$package_version.tgz | awk '{print $6}' | grep -E "^.*(\w$)" | sed "s/^/$FB_INSTALL_PATH\//" > /var/lib/fbpkg/installed/$package_name-$package_version
                                 
                                     echo "Successfully installed $package_name"
 
@@ -225,7 +237,7 @@ else
 
 
                                 for i in $(seq 0 $((${#installed_files[@]}-1))); do
-                                        rm -v /${installed_files[$i]}
+                                        rm -v ${installed_files[$i]}
                                 done
 
                                 # Remove the package from the installed packages directory
