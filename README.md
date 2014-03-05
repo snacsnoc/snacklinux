@@ -11,8 +11,13 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 
 
 ##### Toolchain
-1. Download buildroot 2013.11 and place this file [buildroot-2013.11/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/buildroot-2013.11/.config) in the buildroot directory and run `make`.
-2. Set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the gcc toolchain
+1. Download buildroot 2013.11 and `.config` and `uClibc-0.9.33.config` from this repo and place the files in the buildroot directory.
+2. Run `make menuconfig` and/or `make uclibc-menuconfig` to change any options, namely paths. If all is well, run `make` 
+3. If everything went well, set your $PATH to /path-to-buildroot/buildroot-x.x/output/host/usr/bin:${PATH} to include the gcc toolchain
+
+#### uClibc
+Thankfully buildroot already creates uClibc for us, so we copy `lib/` and `usr/` from `buildroot-2013.11/output/host/usr/i686-buildroot-linux-uclibc/sysroot` to the SnackLinux root `_install`.
+
 
 Note: you might also want to `export LD_LIBRARY_PATH=/path/to/buildroot-x.x/output/host/usr/i686-buildroot-linux-uclibc/sysroot/usr/lib` so if you do cross compile, you are linking against the correct libs.
 
