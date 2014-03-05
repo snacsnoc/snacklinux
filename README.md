@@ -28,8 +28,17 @@ Note: you might also want to `export LD_LIBRARY_PATH=/path/to/buildroot-x.x/outp
 4. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
 
 ##### Bash
-1. Compile Bash 4.2 with `./configure --enable-static-link --enable-largefile --prefix=/path-to-root-fs/_install --without-bash-malloc`
-2. Run `CC='i686-linux-cc' make` (to use the toolchain), then `make install`
+1. To compile Bash 4.3:
+```
+./configure --enable-static-link --enable-largefile --prefix=/path/to/install --without-bash-malloc --enable-net-redirections --host=i686-buildroot-linux-uclibc --target=i686-buildroot-linux-uclibc -C
+
+# This is a uClibc fix, see http://lists.gnu.org/archive/html/bug-bash/2012-03/msg00052.html
+sed -i 's/${bash_cv_getenv_redef=yes}/0/g' config.cache
+
+./configure --enable-static-link --enable-largefile --prefix=/path/to/install --without-bash-malloc --enable-net-redirections --host=i686-buildroot-linux-uclibc --target=i686-buildroot-linux-uclibc -C
+
+make && make install
+```
 
 #### Syslinux
 You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. The recommended version is 5.01. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` and `com32/elflink/ldlinux/ldlinux.c32` to `snacklinux/boot/isolinux`. 
