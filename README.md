@@ -70,15 +70,28 @@ Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
 
 Tiny Core Linux distribution for inspiration and documentation http://tinycorelinux.net
 
+Linux From Scratch for excellent documentation http://www.linuxfromscratch.org/
+
 Here are links to the software used in SnackLinux:
+
 [syslinux 5.01](https://www.kernel.org/pub/linux/utils/boot/syslinux/)
+
 [linux 3.13](ftp://ftp.kernel.org/pub/linux/kernel/v3.x/)
+
 [busybox 1.22.1](http://www.busybox.net/downloads/)
+
 [buildroot 2013.11](http://buildroot.uclibc.org/download.html)
+
 [bash 4.2](http://ftp.gnu.org/gnu/bash/)
+
 [fbpkg 0.1.5](https://github.com/snacsnoc/fbpkg)
+
 [dialog 1.2](http://invisible-island.net/dialog/dialog.html#download)
+
 [uclibc 0.9.33.2](http://www.uclibc.org/download.html)
+
 [binutils 2.32.2](http://ftp.gnu.org/gnu/binutils/)
+
 [lilo 24.0](http://lilo.alioth.debian.org/)
+
 [ncurses 5.9](http://ftp.gnu.org/pub/gnu/ncurses/)
