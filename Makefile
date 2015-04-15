@@ -8,7 +8,7 @@ CDIMAGE=snacklinux_i386
 
 GIT_URL=git@bitbucket.org:snacsnoc/snacklinux.git
 
-KERNEL_VERSION=3.13
+KERNEL_VERSION=4.0
 
 ARCH=x86
 
@@ -35,7 +35,7 @@ download:
 kernel: 
 	#Clone git repo and get .config, then build
 	$(GIT) clone $(GIT_URL)
-	wget https://www.kernel.org/pub/linux/kernel/v3.x/linux-$(KERNEL_VERSION).tar.xz | tar xvf -
+	wget https://www.kernel.org/pub/linux/kernel/v4.x/linux-$(KERNEL_VERSION).tar.xz | tar xvf -
 	cd linux-$(KERNEL_VERSION)/	
 	cp ../snacklinux/linux-$(KERNEL_VERSION)/.config .
 	
