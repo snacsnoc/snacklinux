@@ -53,6 +53,12 @@ typedef struct {
 } mcontext_t;
 #endif
 
+struct sigaltstack {
+	void *ss_sp;
+	int ss_flags;
+	size_t ss_size;
+};
+
 typedef struct __ucontext {
 	unsigned long uc_flags;
 	struct __ucontext *uc_link;
@@ -79,6 +85,7 @@ typedef struct __ucontext {
 #define SIGILL    4
 #define SIGTRAP   5
 #define SIGABRT   6
+#define SIGIOT    SIGABRT
 #define SIGBUS    7
 #define SIGFPE    8
 #define SIGKILL   9

@@ -8,18 +8,19 @@ extern "C" {
 #include <features.h>
 
 #define __NEED_wint_t
-#define __NEED_wctrans_t
 #define __NEED_wctype_t
 
 #if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
+ || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #define __NEED_locale_t
 #endif
 
 #include <bits/alltypes.h>
 
+typedef const int * wctrans_t;
+
 #undef WEOF
-#define WEOF (-1)
+#define WEOF 0xffffffffU
 
 #undef iswdigit
 
@@ -42,11 +43,13 @@ wint_t    towupper(wint_t);
 wctrans_t wctrans(const char *);
 wctype_t  wctype(const char *);
 
+#ifndef __cplusplus
 #undef iswdigit
 #define iswdigit(a) (((unsigned)(a)-L'0') < 10)
+#endif
 
 #if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
+ || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 
 int iswalnum_l(wint_t, locale_t);
 int iswalpha_l(wint_t, locale_t);

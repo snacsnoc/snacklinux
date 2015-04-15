@@ -25,16 +25,9 @@ extern "C" {
 #define SETVAL		16
 #define SETALL		17
 
-struct semid_ds {
-	struct ipc_perm sem_perm;
-	long sem_otime;
-	unsigned long __unused1;
-	long sem_ctime;
-	unsigned long __unused2;
-	unsigned long sem_nsems;
-	unsigned long __unused3;
-	unsigned long __unused4;
-};
+#include <endian.h>
+
+#include <bits/sem.h>
 
 #define _SEM_SEMUN_UNDEFINED 1
 

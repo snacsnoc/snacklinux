@@ -52,6 +52,7 @@ struct arphdr {
 #define ARPHRD_ROSE	270
 #define ARPHRD_X25	271
 #define ARPHRD_HWX25	272
+#define ARPHRD_CAN	280
 #define ARPHRD_PPP	512
 #define ARPHRD_CISCO	513
 #define ARPHRD_HDLC	ARPHRD_CISCO
@@ -84,7 +85,12 @@ struct arphdr {
 #define ARPHRD_IEEE80211_PRISM 802
 #define ARPHRD_IEEE80211_RADIOTAP 803
 #define ARPHRD_IEEE802154 804
-#define ARPHRD_IEEE802154_PHY 805
+#define ARPHRD_IEEE802154_MONITOR 805
+#define ARPHRD_PHONET 820
+#define ARPHRD_PHONET_PIPE 821
+#define ARPHRD_CAIF 822
+#define ARPHRD_IP6GRE 823
+#define ARPHRD_NETLINK 824
 
 #define ARPHRD_VOID	  0xFFFF
 #define ARPHRD_NONE	  0xFFFE
@@ -117,12 +123,12 @@ struct arpreq_old {
 #define ARPD_FLUSH	0x03
 
 struct arpd_request {
-	uint16_t req;
+	unsigned short req;
 	uint32_t ip;
-	uint32_t dev;
-	uint32_t stamp;
-	uint32_t updated;
-	uint8_t ha[MAX_ADDR_LEN];
+	unsigned long dev;
+	unsigned long stamp;
+	unsigned long updated;
+	unsigned char ha[MAX_ADDR_LEN];
 };
 
 

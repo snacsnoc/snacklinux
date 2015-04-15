@@ -19,12 +19,25 @@ extern "C" {
 
 #include <bits/socket.h>
 
+#ifdef _GNU_SOURCE
 struct ucred
 {
 	pid_t pid;
 	uid_t uid;
 	gid_t gid;
 };
+
+struct mmsghdr
+{
+	struct msghdr msg_hdr;
+	unsigned int  msg_len;
+};
+
+struct timespec;
+
+int sendmmsg (int, struct mmsghdr *, unsigned int, unsigned int);
+int recvmmsg (int, struct mmsghdr *, unsigned int, unsigned int, struct timespec *);
+#endif
 
 struct linger
 {
@@ -33,7 +46,7 @@ struct linger
 };
 
 #define SHUT_RD 0
-#define SHUT_WD 1
+#define SHUT_WR 1
 #define SHUT_RDWR 2
 
 #ifndef SOCK_STREAM
@@ -82,6 +95,7 @@ struct linger
 #define PF_PPPOX        24
 #define PF_WANPIPE      25
 #define PF_LLC          26
+#define PF_IB           27
 #define PF_CAN          29
 #define PF_TIPC         30
 #define PF_BLUETOOTH    31
@@ -93,7 +107,8 @@ struct linger
 #define PF_CAIF         37
 #define PF_ALG          38
 #define PF_NFC          39
-#define PF_MAX          40
+#define PF_VSOCK        40
+#define PF_MAX          41
 
 #define AF_UNSPEC       PF_UNSPEC
 #define AF_LOCAL        PF_LOCAL
@@ -125,6 +140,7 @@ struct linger
 #define AF_PPPOX        PF_PPPOX
 #define AF_WANPIPE      PF_WANPIPE
 #define AF_LLC          PF_LLC
+#define AF_IB           PF_IB
 #define AF_CAN          PF_CAN
 #define AF_TIPC         PF_TIPC
 #define AF_BLUETOOTH    PF_BLUETOOTH
@@ -136,6 +152,7 @@ struct linger
 #define AF_CAIF         PF_CAIF
 #define AF_ALG          PF_ALG
 #define AF_NFC          PF_NFC
+#define AF_VSOCK        PF_VSOCK
 #define AF_MAX          PF_MAX
 
 #ifndef SO_DEBUG
@@ -153,7 +170,7 @@ struct linger
 #define SO_PRIORITY     12
 #define SO_LINGER       13
 #define SO_BSDCOMPAT    14
-/* #define SO_REUSEPORT    15 */
+#define SO_REUSEPORT    15
 #define SO_PASSCRED     16
 #define SO_PEERCRED     17
 #define SO_RCVLOWAT     18
@@ -164,7 +181,6 @@ struct linger
 #define SO_RCVBUFFORCE  33
 #endif
 
-
 #define SO_SECURITY_AUTHENTICATION              22
 #define SO_SECURITY_ENCRYPTION_TRANSPORT        23
 #define SO_SECURITY_ENCRYPTION_NETWORK          24
@@ -173,16 +189,40 @@ struct linger
 
 #define SO_ATTACH_FILTER        26
 #define SO_DETACH_FILTER        27
+#define SO_GET_FILTER           SO_ATTACH_FILTER
 
 #define SO_PEERNAME             28
 #define SO_TIMESTAMP            29
 #define SCM_TIMESTAMP           SO_TIMESTAMP
 
 #define SO_ACCEPTCONN           30
+#define SO_PEERSEC              31
+#define SO_PASSSEC              34
+#define SO_TIMESTAMPNS          35
+#define SCM_TIMESTAMPNS         SO_TIMESTAMPNS
+#define SO_MARK                 36
+#define SO_TIMESTAMPING         37
+#define SCM_TIMESTAMPING        SO_TIMESTAMPING
+#define SO_PROTOCOL             38
+#define SO_DOMAIN               39
+#define SO_RXQ_OVFL             40
+#define SO_WIFI_STATUS          41
+#define SCM_WIFI_STATUS         SO_WIFI_STATUS
+#define SO_PEEK_OFF             42
+#define SO_NOFCS                43
+#define SO_LOCK_FILTER          44
+#define SO_SELECT_ERR_QUEUE     45
+#define SO_BUSY_POLL            46
+#define SO_MAX_PACING_RATE      47
+#define SO_BPF_EXTENSIONS       48
 
 #ifndef SOL_SOCKET
 #define SOL_SOCKET      1
 #endif
+
+#define SOL_IP          0
+#define SOL_IPV6        41
+#define SOL_ICMPV6      58
 
 #define SOL_RAW         255
 #define SOL_DECNET      261
@@ -204,7 +244,7 @@ struct linger
 #define MSG_EOR       0x0080
 #define MSG_WAITALL   0x0100
 #define MSG_FIN       0x0200
-#define MSD_SYN       0x0400
+#define MSG_SYN       0x0400
 #define MSG_CONFIRM   0x0800
 #define MSG_RST       0x1000
 #define MSG_ERRQUEUE  0x2000
@@ -239,10 +279,8 @@ struct sockaddr
 struct sockaddr_storage
 {
 	sa_family_t ss_family;
-	union {
-		long long __align;
-		char __padding[126];
-	} __padding;
+	unsigned long __ss_align;
+	char __ss_padding[128-2*sizeof(unsigned long)];
 };
 
 int socket (int, int, int);
@@ -270,10 +308,6 @@ int getsockopt (int, int, int, void *__restrict, socklen_t *__restrict);
 int setsockopt (int, int, int, const void *, socklen_t);
 
 int sockatmark (int);
-
-#define SHUT_RD 0
-#define SHUT_WR 1
-#define SHUT_RDWR 2
 
 #ifdef __cplusplus
 }

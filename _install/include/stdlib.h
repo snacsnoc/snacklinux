@@ -7,7 +7,11 @@ extern "C" {
 
 #include <features.h>
 
+#ifdef __cplusplus
 #define NULL 0L
+#else
+#define NULL ((void*)0)
+#endif
 
 #define __NEED_size_t
 #define __NEED_wchar_t
@@ -88,13 +92,14 @@ size_t wcstombs (char *__restrict, const wchar_t *__restrict, size_t);
 #define WTERMSIG(s) ((s) & 0x7f)
 #define WSTOPSIG(s) WEXITSTATUS(s)
 #define WIFEXITED(s) (!WTERMSIG(s))
-#define WIFSTOPPED(s) (((s) & 0xff) == 0x7f)
-#define WIFSIGNALED(s) (((signed char) (((s) & 0x7f) + 1) >> 1) > 0)
+#define WIFSTOPPED(s) ((short)((((s)&0xffff)*0x10001)>>8) > 0x7f00)
+#define WIFSIGNALED(s) (((s)&0xffff)-1U < 0xffu)
 
 int posix_memalign (void **, size_t, size_t);
 int setenv (const char *, const char *, int);
 int unsetenv (const char *);
 int mkstemp (char *);
+int mkostemp (char *, int);
 char *mkdtemp (char *);
 int getsubopt (char **, char *const *, char **);
 int rand_r (unsigned *);
@@ -109,9 +114,6 @@ long int random (void);
 void srandom (unsigned int);
 char *initstate (unsigned int, char *, size_t);
 char *setstate (char *);
-#endif
-
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
 int putenv (char *);
 int posix_openpt (int);
 int grantpt (int);
@@ -134,22 +136,34 @@ void lcong48 (unsigned short [7]);
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #include <alloca.h>
 char *mktemp (char *);
+int mkstemps (char *, int);
+int mkostemps (char *, int, int);
 void *valloc (size_t);
 void *memalign(size_t, size_t);
+int getloadavg(double *, int);
+int clearenv(void);
 #define WCOREDUMP(s) ((s) & 0x80)
 #define WIFCONTINUED(s) ((s) == 0xffff)
 #endif
 
 #ifdef _GNU_SOURCE
-int clearenv(void);
 int ptsname_r(int, char *, size_t);
 char *ecvt(double, int, int *, int *);
 char *fcvt(double, int, int *, int *);
 char *gcvt(double, int, char *);
+struct __locale_struct;
+float strtof_l(const char *__restrict, char **__restrict, struct __locale_struct *);
+double strtod_l(const char *__restrict, char **__restrict, struct __locale_struct *);
+long double strtold_l(const char *__restrict, char **__restrict, struct __locale_struct *);
 #endif
 
 #if defined(_LARGEFILE64_SOURCE) || defined(_GNU_SOURCE)
 #define mkstemp64 mkstemp
+#define mkostemp64 mkostemp
+#if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+#define mkstemps64 mkstemps
+#define mkostemps64 mkostemps
+#endif
 #endif
 
 #ifdef __cplusplus

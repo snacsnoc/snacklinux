@@ -6,15 +6,12 @@ extern "C" {
 #endif
 
 #include <features.h>
+#include <netinet/in.h>
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #define __NEED_size_t
-#endif
-
-#define __NEED_socklen_t
-#define __NEED_uint32_t
-
 #include <bits/alltypes.h>
+#endif
 
 struct addrinfo
 {
@@ -44,7 +41,7 @@ struct addrinfo
 #define NI_NOFQDN       0x04
 #define NI_NAMEREQD     0x08
 #define NI_DGRAM        0x10
-/*#define NI_NUMERICSCOPE */
+#define NI_NUMERICSCOPE 0x100
 
 #define EAI_BADFLAGS   -1
 #define EAI_NONAME     -2
@@ -134,9 +131,11 @@ int *__h_errno_location(void);
 #define TRY_AGAIN      2
 #define NO_RECOVERY    3
 #define NO_DATA        4
+#define NO_ADDRESS     NO_DATA
 #endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+void herror(const char *);
 const char *hstrerror(int);
 int gethostbyname_r(const char *, struct hostent *, char *, size_t, struct hostent **, int *);
 int gethostbyname2_r(const char *, int, struct hostent *, char *, size_t, struct hostent **, int *);

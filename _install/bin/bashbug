@@ -26,14 +26,14 @@
 # configuration section:
 #	these variables are filled in by the make target in Makefile
 #
-MACHINE="i686"
-OS="linux-uclibc"
-CC="i686-buildroot-linux-uclibc-gcc"
-CFLAGS=" -DPROGRAM='bash' -DCONF_HOSTTYPE='i686' -DCONF_OSTYPE='linux-uclibc' -DCONF_MACHTYPE='i686-buildroot-linux-uclibc' -DCONF_VENDOR='buildroot' -DLOCALEDIR='/home/easto/bash-4.3/_install/share/locale' -DPACKAGE='bash' -DSHELL -DHAVE_CONFIG_H   -I.  -I. -I./include -I./lib -I./lib/intl -I/home/easto/bash-4.3/lib/intl  -g -O2"
+MACHINE="i486"
+OS="linux-musl"
+CC="i486-linux-musl-gcc"
+CFLAGS=" -DPROGRAM='bash' -DCONF_HOSTTYPE='i486' -DCONF_OSTYPE='linux-musl' -DCONF_MACHTYPE='i486-pc-linux-musl' -DCONF_VENDOR='pc' -DLOCALEDIR='/root/snack_install_root/share/locale' -DPACKAGE='bash' -DSHELL -DHAVE_CONFIG_H   -I.  -I. -I./include -I./lib -I./lib/intl -I/root/bash-4.3/lib/intl  -g -O2"
 RELEASE="4.3"
 PATCHLEVEL="0"
 RELSTATUS="release"
-MACHTYPE="i686-buildroot-linux-uclibc"
+MACHTYPE="i486-pc-linux-musl"
 
 PATH=/bin:/usr/bin:/usr/local/bin:$PATH
 export PATH

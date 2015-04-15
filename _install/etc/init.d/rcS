@@ -33,6 +33,5 @@ echo
 echo "Kernel release: `uname -s` `uname -r`"
 echo "Kernel version: `uname -v`"
 echo
-echo "Password for root is root"
 echo "--------------------------------------------------------------"
 echo

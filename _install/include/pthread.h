@@ -84,7 +84,9 @@ __attribute__((const))
 pthread_t pthread_self(void);
 
 int pthread_equal(pthread_t, pthread_t);
+#ifndef __cplusplus
 #define pthread_equal(x,y) ((x)==(y))
+#endif
 
 int pthread_setcancelstate(int, int *);
 int pthread_setcanceltype(int, int *);
@@ -208,6 +210,13 @@ void _pthread_cleanup_pop(struct __ptcb *, int);
 
 #define pthread_cleanup_push(f, x) do { struct __ptcb __cb; _pthread_cleanup_push(&__cb, f, x);
 #define pthread_cleanup_pop(r) _pthread_cleanup_pop(&__cb, (r)); } while(0)
+
+#ifdef _GNU_SOURCE
+struct cpu_set_t;
+int pthread_getaffinity_np(pthread_t, size_t, struct cpu_set_t *);
+int pthread_setaffinity_np(pthread_t, size_t, const struct cpu_set_t *);
+int pthread_getattr_np(pthread_t, pthread_attr_t *);
+#endif
 
 #ifdef __cplusplus
 }

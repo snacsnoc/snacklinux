@@ -10,6 +10,10 @@ extern "C" {
 #define __NEED_size_t
 #define __NEED_gid_t
 
+#ifdef _GNU_SOURCE
+#define __NEED_FILE
+#endif
+
 #include <bits/alltypes.h>
 
 struct group
@@ -29,6 +33,11 @@ int getgrnam_r(const char *, struct group *, char *, size_t, struct group **);
 struct group  *getgrent(void);
 void           endgrent(void);
 void           setgrent(void);
+
+#ifdef _GNU_SOURCE
+struct group  *fgetgrent(FILE *stream);
+int putgrent(const struct group *, FILE *);
+#endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 int getgrouplist(const char *, gid_t, gid_t *, int *);

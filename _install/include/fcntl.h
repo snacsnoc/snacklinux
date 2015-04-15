@@ -46,6 +46,10 @@ int posix_fallocate(int, off_t, off_t);
 #define O_WRONLY  01
 #define O_RDWR    02
 
+#define F_OFD_GETLK 36
+#define F_OFD_SETLK 37
+#define F_OFD_SETLKW 38
+
 #define F_DUPFD_CLOEXEC 1030
 
 #define F_RDLCK 0
@@ -93,6 +97,9 @@ int posix_fallocate(int, off_t, off_t);
 #endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+#define AT_NO_AUTOMOUNT 0x800
+#define AT_EMPTY_PATH 0x1000
+
 #define FAPPEND O_APPEND
 #define FFSYNC O_FSYNC
 #define FASYNC O_ASYNC
@@ -114,6 +121,13 @@ int posix_fallocate(int, off_t, off_t);
 #define F_CANCELLK	1029
 #define F_SETPIPE_SZ	1031
 #define F_GETPIPE_SZ	1032
+#define F_ADD_SEALS	1033
+#define F_GET_SEALS	1034
+
+#define F_SEAL_SEAL	0x0001
+#define F_SEAL_SHRINK	0x0002
+#define F_SEAL_GROW	0x0004
+#define F_SEAL_WRITE	0x0008
 
 #define DN_ACCESS	0x00000001
 #define DN_MODIFY	0x00000002
@@ -145,6 +159,7 @@ struct f_owner_ex {
 #define SPLICE_F_MORE 4
 #define SPLICE_F_GIFT 8
 int fallocate(int, int, off_t, off_t);
+#define fallocate64 fallocate
 ssize_t readahead(int, off_t, size_t);
 int sync_file_range(int, off_t, off_t, unsigned);
 ssize_t vmsplice(int, const struct iovec *, size_t, unsigned);
@@ -154,6 +169,10 @@ ssize_t tee(int, int, size_t, unsigned);
 #endif
 
 #if defined(_LARGEFILE64_SOURCE) || defined(_GNU_SOURCE)
+#define F_GETLK64 F_GETLK
+#define F_SETLK64 F_SETLK
+#define F_SETLKW64 F_SETLKW
+#define flock64 flock
 #define open64 open
 #define openat64 openat
 #define creat64 creat

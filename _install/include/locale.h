@@ -7,7 +7,11 @@ extern "C" {
 
 #include <features.h>
 
+#ifdef __cplusplus
 #define NULL 0L
+#else
+#define NULL ((void*)0)
+#endif
 
 #define LC_CTYPE    0
 #define LC_NUMERIC  1
@@ -51,7 +55,7 @@ struct lconv *localeconv(void);
 
 
 #if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
+ || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 
 #define __NEED_locale_t
 

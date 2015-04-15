@@ -333,6 +333,11 @@
 #define __NR_inotify_init1	332
 #define __NR_preadv		333
 #define __NR_pwritev		334
+#define __NR_rt_tgsigqueueinfo	335
+#define __NR_perf_event_open	336
+#define __NR_recvmmsg		337
+#define __NR_fanotify_init	338
+#define __NR_fanotify_mark	339
 #define __NR_prlimit64		340
 #define __NR_name_to_handle_at	341
 #define __NR_open_by_handle_at	342
@@ -342,6 +347,15 @@
 #define __NR_setns		346
 #define __NR_process_vm_readv	347
 #define __NR_process_vm_writev	348
+#define __NR_kcmp		349
+#define __NR_finit_module	350
+#define __NR_sched_setattr	351
+#define __NR_sched_getattr	352
+#define __NR_renameat2		353
+#define __NR_seccomp		354
+#define __NR_getrandom		355
+#define __NR_memfd_create	356
+#define __NR_bpf		357
 
 
 /* Repeated with SYS_ prefix */
@@ -681,6 +695,11 @@
 #define SYS_inotify_init1	332
 #define SYS_preadv		333
 #define SYS_pwritev		334
+#define SYS_rt_tgsigqueueinfo	335
+#define SYS_perf_event_open	336
+#define SYS_recvmmsg		337
+#define SYS_fanotify_init	338
+#define SYS_fanotify_mark	339
 #define SYS_prlimit64		340
 #define SYS_name_to_handle_at	341
 #define SYS_open_by_handle_at	342
@@ -690,3 +709,12 @@
 #define SYS_setns		346
 #define SYS_process_vm_readv	347
 #define SYS_process_vm_writev	348
+#define SYS_kcmp		349
+#define SYS_finit_module	350
+#define SYS_sched_setattr	351
+#define SYS_sched_getattr	352
+#define SYS_renameat2		353
+#define SYS_seccomp		354
+#define SYS_getrandom		355
+#define SYS_memfd_create	356
+#define SYS_bpf			357

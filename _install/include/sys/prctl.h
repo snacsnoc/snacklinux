@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 #define PR_SET_PDEATHSIG  1
 #define PR_GET_PDEATHSIG  2
 #define PR_GET_DUMPABLE   3
@@ -39,9 +41,9 @@ extern "C" {
 #define PR_GET_NAME    16
 #define PR_GET_ENDIAN 19
 #define PR_SET_ENDIAN 20
-#define PR_ENDIAN_BIG
-#define PR_ENDIAN_LITTLE
-#define PR_ENDIAN_PPC_LITTLE
+#define PR_ENDIAN_BIG 0
+#define PR_ENDIAN_LITTLE 1
+#define PR_ENDIAN_PPC_LITTLE 2
 #define PR_GET_SECCOMP 21
 #define PR_SET_SECCOMP 22
 #define PR_CAPBSET_READ 23
@@ -54,6 +56,65 @@ extern "C" {
 #define PR_SET_SECUREBITS 28
 #define PR_SET_TIMERSLACK 29
 #define PR_GET_TIMERSLACK 30
+
+#define PR_TASK_PERF_EVENTS_DISABLE             31
+#define PR_TASK_PERF_EVENTS_ENABLE              32
+
+#define PR_MCE_KILL     33
+#define PR_MCE_KILL_CLEAR   0
+#define PR_MCE_KILL_SET     1
+#define PR_MCE_KILL_LATE    0
+#define PR_MCE_KILL_EARLY   1
+#define PR_MCE_KILL_DEFAULT 2
+#define PR_MCE_KILL_GET 34
+
+#define PR_SET_MM               35
+#define PR_SET_MM_START_CODE           1
+#define PR_SET_MM_END_CODE             2
+#define PR_SET_MM_START_DATA           3
+#define PR_SET_MM_END_DATA             4
+#define PR_SET_MM_START_STACK          5
+#define PR_SET_MM_START_BRK            6
+#define PR_SET_MM_BRK                  7
+#define PR_SET_MM_ARG_START            8
+#define PR_SET_MM_ARG_END              9
+#define PR_SET_MM_ENV_START            10
+#define PR_SET_MM_ENV_END              11
+#define PR_SET_MM_AUXV                 12
+#define PR_SET_MM_EXE_FILE             13
+#define PR_SET_MM_MAP                  14
+#define PR_SET_MM_MAP_SIZE             15
+
+struct prctl_mm_map {
+	uint64_t start_code;
+	uint64_t end_code;
+	uint64_t start_data;
+	uint64_t end_data;
+	uint64_t start_brk;
+	uint64_t brk;
+	uint64_t start_stack;
+	uint64_t arg_start;
+	uint64_t arg_end;
+	uint64_t env_start;
+	uint64_t env_end;
+	uint64_t *auxv;
+	uint32_t auxv_size;
+	uint32_t exe_fd;
+};
+
+#define PR_SET_PTRACER 0x59616d61
+#define PR_SET_PTRACER_ANY (-1UL)
+
+#define PR_SET_CHILD_SUBREAPER  36
+#define PR_GET_CHILD_SUBREAPER  37
+
+#define PR_SET_NO_NEW_PRIVS     38
+#define PR_GET_NO_NEW_PRIVS     39
+
+#define PR_GET_TID_ADDRESS      40
+
+#define PR_SET_THP_DISABLE      41
+#define PR_GET_THP_DISABLE      42
 
 int prctl (int, ...);
 
