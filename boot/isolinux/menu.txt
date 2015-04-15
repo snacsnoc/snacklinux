@@ -4,12 +4,8 @@ Choose an option
    2) 800x600 x 16bit
    3) 1024x768 x 16bit
    4) Set own resolution
-
-
- Copyright GPL (c) Mike Chirico 
- (mchirico@users.sourceforge.net) 
  
- This is SnackLinux
+ SnackLinux - snacklinux.org
  (easton@geekness.eu)
 
- Kernel 3.13 (Jan 27 2014)
+ Kernel 4.0 (Apr 12 2015)
