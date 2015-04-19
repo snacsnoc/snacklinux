@@ -30,11 +30,13 @@ CC=i486-linux-musl-gcc make install
 ```
 
 ##### BusyBox
-1. Clone this git repo or just get the [busybox-1.22.1/.config](https://bitbucket.org/snacsnoc/snacklinux/src/master/busybox-1.22.1/.config) file and place it in the busybox-1.22.1 directory
+1. Clone this git repo or just get the [busybox-1.23.2/.config](https://github.com/snacsnoc/snacklinux/blob/master/busybox-1.23.2/.config) file and place it in the busybox-1.23.2 directory
 2. Run `make menuconfig` to change any config value, notably the install directory and compiler prefix (_i486-linux-musl-_)
 3. Patch ifplugd, if using default SnackLinux config, with `patch -p1 -iifplugd.patch`. See http://wiki.musl-libc.org/wiki/Building_Busybox
 4. Compile `make` and install `make install`
 5. Run `cp -r _install/ ..` to copy BusyBox folder structure to root system
+6. Once copied to the root filesystem, `cd` there and create init with `ln -s bin/busybox init`
+ 
 
 ##### Bash
 To compile Bash 4.3:
@@ -55,6 +57,15 @@ You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinu
 Run `make kernel`. This will compile the kernel.
 
 ###### ISO image
+Prerequisites:
+```
+#Base files (/etc)
+https://github.com/snacsnoc/snacklinux-base.git
+cp -R snacklinux-base/rootfs/* _install/
+#fbpkg (package manager)
+git clone https://github.com/snacsnoc/fbpkg.git
+cp fbpkg/fbpkg _install/usr/bin
+```
 Run `make iso`. The output ISO will be in `iso/`
 
 Note: you do not have to have the toolchain to create the ISO
