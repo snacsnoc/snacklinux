@@ -24,9 +24,9 @@ make CROSS_COMPILE=i486-linux-musl- bzImage
 ##### musl
 
 ```
-CC=i486-linux-musl-gcc ./configure --prefix=/root/snack_install_root/
-CC=i486-linux-musl-gcc make -j2
-CC=i486-linux-musl-gcc make install
+CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/ --enable-gcc-wrapper 
+make 
+make DESTDIR=/sysroot/path install
 ```
 
 ##### BusyBox
@@ -47,6 +47,18 @@ CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- ./configure --enable-stati
 CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- make 
 make install
 ```
+##### Binutils
+
+```
+LDFLAGS="-Wl,-static" 
+CC="i486-musl-linux-gcc -static" 
+CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE" 
+./configure --target=i486-musl-linux  --host=i486-musl-linux --disable-shared --disable-multilib --disable-nls --with-sysroot=/sysroot --prefix=/usr
+
+make
+make DESTDIR=/sysroot install
+```
+
 
 #### Syslinux
 You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. The recommended version is 5.01. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` and `com32/elflink/ldlinux/ldlinux.c32` to `snacklinux/boot/isolinux`. 
@@ -74,7 +86,7 @@ Note: you do not have to have the toolchain to create the ISO
 Packages
 -------
 Read the [Packages page](http://snacklinux.org/packages) for building packages.
-For SnackLinux's package manager fbpkg, see [here](https://bitbucket.org/snacsnoc/fbpkg).
+For SnackLinux's package manager fbpkg, see [here](https://github.com/snacsnoc/fbpkg).
 
 Hacking
 -------
@@ -103,10 +115,4 @@ Here are links to the software used in SnackLinux:
 
 [fbpkg 0.1.5](https://github.com/snacsnoc/fbpkg)
 
-[dialog 1.2](http://invisible-island.net/dialog/dialog.html#download)
-
-[binutils 2.32.2](http://ftp.gnu.org/gnu/binutils/)
-
-[lilo 24.0](http://lilo.alioth.debian.org/)
-
-[ncurses 5.9](http://ftp.gnu.org/pub/gnu/ncurses/)
+[binutils 2.25](http://ftp.gnu.org/gnu/binutils/)
