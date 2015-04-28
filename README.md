@@ -107,7 +107,7 @@ Here are links to the software used in SnackLinux:
 
 [syslinux 5.01](https://www.kernel.org/pub/linux/utils/boot/syslinux/)
 
-[linux 4.0](ftp://ftp.kernel.org/pub/linux/kernel/v4.x/)
+[linux 4.0](https://www.kernel.org)
 
 [busybox 1.23.2](http://www.busybox.net/downloads/)
 
