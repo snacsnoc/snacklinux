@@ -8,4 +8,4 @@ Choose an option
  SnackLinux - snacklinux.org
  (easton@geekness.eu)
 
- Kernel 4.0 (Apr 12 2015)
+ Kernel 4.0-2 (May 03 2015)
