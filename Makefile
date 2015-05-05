@@ -12,7 +12,7 @@ KERNEL_VERSION=4.0
 
 ARCH=x86
 
-.PHONY: all iso kernel 
+.PHONY: all iso kernel docker
 
 all: iso
 
@@ -24,10 +24,15 @@ iso:
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
 	
+docker:
+	mkdir -p docker/
+	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C _install/ .
+	mv snacklinux-$(NOW)-docker.tar docker/
+
 clean:
 	rm -rf iso
 	rm -f boot/isolinux/linux*
-
+	rm -f docker
 
 download:
 	$(GIT) clone $(GIT_URL)
