@@ -6,7 +6,7 @@ NOW=`date +'%d.%m.%y'`
 
 CDIMAGE=snacklinux_i386
 
-GIT_URL=git@bitbucket.org:snacsnoc/snacklinux.git
+GIT_URL=https://github.com/snacsnoc/snacklinux.git
 
 KERNEL_VERSION=4.0
 
