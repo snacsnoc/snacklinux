@@ -42,7 +42,7 @@ make DESTDIR=/sysroot/path install
 To compile Bash 4.3:
 
 ```
-CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/path/to/install --without-bash-malloc --enable-net-redirections --host=i486-linux-musl --target=i486-linux-musl -C
+CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/path/to/install --without-bash-malloc --enable-net-redirections --host=i486-linux-musl --target=i486-linux-musl --disable-nls -C
 
 CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- make 
 make install
