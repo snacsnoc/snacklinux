@@ -14,14 +14,14 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 1. Download the musl 1.1.6 cross compiler [here](https://e82b27f594c813a5a4ea5b07b06f16c3777c3b8c.googledrive.com/host/0BwnS5DMB0YQ6bDhPZkpOYVFhbk0/). See also http://musl.codu.org/
 2. Add it to your path with `export PATH=$PATH:/path/to/toolchain/bin` 
 
-##### Linux
+##### Linux - 4.0.5
 
 Use the config from the git repo and compile with:
 ```
-make CROSS_COMPILE=i486-linux-musl- bzImage
+make bzImage
 ```
 
-##### musl
+##### musl - 1.1.9
 
 ```
 CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/ --enable-gcc-wrapper 
@@ -29,7 +29,7 @@ make
 make DESTDIR=/sysroot/path install
 ```
 
-##### BusyBox
+##### BusyBox - 1.23.2
 1. Clone this git repo or just get the [busybox-1.23.2/.config](https://github.com/snacsnoc/snacklinux/blob/master/busybox-1.23.2/.config) file and place it in the busybox-1.23.2 directory
 2. Run `make menuconfig` to change any config value, notably the install directory and compiler prefix (_i486-linux-musl-_)
 3. Patch ifplugd, if using default SnackLinux config, with `patch -p1 -iifplugd.patch`. See http://wiki.musl-libc.org/wiki/Building_Busybox
@@ -38,8 +38,7 @@ make DESTDIR=/sysroot/path install
 6. Once copied to the root filesystem, `cd` there and create init with `ln -s bin/busybox init`
  
 
-##### Bash
-To compile Bash 4.3:
+##### Bash - 4.3
 
 ```
 CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/path/to/install --without-bash-malloc --enable-net-redirections --host=i486-linux-musl --target=i486-linux-musl --disable-nls -C
@@ -47,7 +46,7 @@ CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- ./configure --enable-stati
 CC=i486-linux-musl-gcc CROSS_COMPILE=i486-linux-musl- make 
 make install
 ```
-##### Binutils
+##### Binutils 2.25
 
 ```
 LDFLAGS="-Wl,-static" 
