@@ -24,7 +24,7 @@ make bzImage
 ##### musl - 1.1.10
 
 ```
-CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/ --enable-gcc-wrapper 
+CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/
 make 
 make DESTDIR=/sysroot/path install
 ```
