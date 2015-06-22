@@ -21,7 +21,7 @@ Use the config from the git repo and compile with:
 make bzImage
 ```
 
-##### musl - 1.1.9
+##### musl - 1.1.10
 
 ```
 CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/ --enable-gcc-wrapper 
