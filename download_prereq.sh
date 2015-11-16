@@ -24,6 +24,7 @@ MUSL=musl-1.1.12
 BUSYBOX=busybox-1.23.2
 BINUTILS=binutils-2.25
 BASH=bash-4.3
+SYSLINUX=syslinux-5.01
 
 
 wget http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz || exit 1
@@ -45,3 +46,7 @@ ln -sf $BUSYBOX busybox || exit 1
 wget https://ftp.gnu.org/gnu/bash/$BASH.tar.gz || exit 1
 tar xf $BASH.tar.gz || exit 1
 ln -sf $BASH bash || exit 1
+
+wget https://www.kernel.org/pub/linux/utils/boot/syslinux/$SYSLINUX.tar.gz || exit 1
+tar xf $SYSLINUX.tar.gz || exit 1
+ln -sf $SYSLINUX syslinux || exit 1
