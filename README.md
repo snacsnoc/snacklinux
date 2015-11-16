@@ -43,17 +43,29 @@ make busybox
 ```
 make bash
 ```
-##### Binutils 2.25
+##### Binutils 2.25 (optional)
 
 ```
 make binutils
 ```
 
+#### Syslinux 5.01
 
-#### Syslinux
+```
+make syslinux
+```
 
-You can either copy `isolinux.bin` from your distribution from `/var/lib/syslinux` or compile it yourself. The recommended version is 5.01. If you want to compile Syslinux, [download it](https://www.kernel.org/pub/linux/utils/boot/syslinux/), extract and run `make`. Copy `core/isolinux.bin` and `com32/elflink/ldlinux/ldlinux.c32` to `snacklinux/boot/isolinux`. 
+### Installing to rootfs directory
 
+```
+make install
+```
+
+If you would also like to install binutils, use:
+
+```
+make binutils-install
+```
 
 ##### Booting
 Prerequisites:

@@ -21,6 +21,9 @@ ROOTFS_PATH=/opt/snacklinux_rootfs
 
 all: iso
 
+install: musl-install busybox-install bash-install
+	
+	
 
 iso: 
 	@mkdir -p iso boot/isolinux
@@ -94,7 +97,7 @@ busybox-install: busybox
 bash-install: bash		
 	cd bash/ ; \
 	$(MAKE) DESTDIR=$(ROOTFS_PATH) install
-	$(STRIP) $(ROOTFS_PATH)/bin/bash 
+	@$(STRIP) $(ROOTFS_PATH)/bin/bash 
 
 binutils-install: binutils
 	cd binutils/ ; \
