@@ -2,6 +2,12 @@
 #
 # Create device files
 
+
+if [ "$(id -u)" != "0" ]; then
+   echo "You must run this as root" 1>&2
+   exit 1
+fi
+
 mkdir -v /opt/snacklinux_rootfs/dev
 
 mknod -m 600 /opt/snacklinux_rootfs/dev/console c 5 1
@@ -37,3 +43,5 @@ cp -avp /dev/stdout   /opt/snacklinux_rootfs/dev
 
 mkdir -v /opt/snacklinux_rootfs/dev/shm
 mkdir -v /opt/snacklinux_rootfs/dev/pts
+
+mkdir -v /opt/snacklinux_rootfs/proc
