@@ -37,7 +37,7 @@ iso:
 	
 docker:
 	mkdir -p docker/
-	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C _install/ .
+	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C $(ROOTFS_PATH)/ .
 	mv snacklinux-$(NOW)-docker.tar docker/
 
 clean:
