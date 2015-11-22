@@ -34,6 +34,7 @@ mknod -m 644 /opt/snacklinux_rootfs/dev/tty2 c 4 2
 mknod -m 644 /opt/snacklinux_rootfs/dev/tty3 c 4 3
 mknod -m 644 /opt/snacklinux_rootfs/dev/tty4 c 4 4
 mknod -m 644 /opt/snacklinux_rootfs/dev/tty5 c 4 5
+mknod -m 644 /opt/snacklinux_rootfs/dev/tty6 c 4 6
 mknod -m 644 /opt/snacklinux_rootfs/dev/vcs0 b 7 0
 
 cp -avp /dev/core   /opt/snacklinux_rootfs/dev
