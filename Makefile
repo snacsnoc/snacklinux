@@ -71,7 +71,7 @@ binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
-	./configure --target=i486-musl-linux  --host=i486-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr	; \
+	./configure --target=i486-musl-linux  --host=i486-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
 	$(MAKE) -j$(MAKEFLAGS) ; \
 
 syslinux:
