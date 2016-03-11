@@ -20,7 +20,7 @@
 # along with this program. If not, see http://www.gnu.org/licenses/.
 
 LINUX=linux-4.4.5
-MUSL=musl-1.1.12
+MUSL=musl-1.1.14
 BUSYBOX=busybox-1.23.2
 BINUTILS=binutils-2.26
 BASH=bash-4.3

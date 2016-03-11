@@ -27,7 +27,7 @@ Compiling SnackLinux from source is done through the Makefile
 make kernel
 ```
 
-##### musl - 1.1.12
+##### musl - 1.1.14
 ```
 make musl
 ```
