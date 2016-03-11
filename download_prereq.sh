@@ -19,10 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see http://www.gnu.org/licenses/.
 
-LINUX=linux-4.3
+LINUX=linux-4.4.5
 MUSL=musl-1.1.12
 BUSYBOX=busybox-1.23.2
-BINUTILS=binutils-2.25
+BINUTILS=binutils-2.26
 BASH=bash-4.3
 SYSLINUX=syslinux-5.01
 
