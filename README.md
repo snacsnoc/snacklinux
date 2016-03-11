@@ -21,7 +21,7 @@ Compile your own toolchain with [musl-cross](https://bitbucket.org/GregorR/musl-
 
 Compiling SnackLinux from source is done through the Makefile
 
-##### Linux - 4.0.5
+##### Linux - 4.4.5
 
 ```
 make kernel
@@ -43,7 +43,7 @@ make busybox
 ```
 make bash
 ```
-##### Binutils 2.25 (optional)
+##### Binutils 2.26 (optional)
 
 ```
 make binutils
