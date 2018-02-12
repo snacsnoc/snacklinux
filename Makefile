@@ -6,16 +6,18 @@ PATCH=/usr/bin/patch
 
 NOW=`date +'%d.%m.%y'`
 
-CDIMAGE=snacklinux_i386
+CDIMAGE=snacklinux_x86_64
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
 
-ARCH=x86
+ARCH=x86_64
 
 MAKEFLAGS=-j8
 
+PWD=$(shell pwd)
 
 ROOTFS_PATH=/opt/snacklinux_rootfs
+
 
 .PHONY: all iso kernel docker musl busybox bash binutils syslinux
 
@@ -27,10 +29,9 @@ install: musl-install busybox-install bash-install
 
 iso: 
 	@mkdir -p iso boot/isolinux
-	PWD=$(shell pwd)
 	@cp ./configs/syslinux/isolinux.cfg boot/isolinux 
 	@cp ./configs/syslinux/menu.txt boot/isolinux 
-	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip -6 > $(PWD)/rootfs.gz 
+	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip -7 > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
@@ -52,7 +53,7 @@ kernel:
 
 musl:
 	cd musl/ ; \
-	CROSS_COMPILE=i486-musl-linux- ./configure --prefix=/ ; \
+	CROSS_COMPILE=$(ARCH)-musl-linux- ./configure --prefix=/ ; \
 	$(MAKE) -j$(MAKEFLAGS) ; \
 
 busybox:
@@ -64,23 +65,25 @@ busybox:
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=i486-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=i486-linux-musl --target=i486-linux-musl --disable-nls -C	; \
+	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
 	$(MAKE) -j$(MAKEFLAGS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
-	./configure --target=i486-musl-linux  --host=i486-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
+	./configure --target=$(ARCH)-musl-linux  --host=$(ARCH)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
 	$(MAKE) -j$(MAKEFLAGS) ; \
 
 syslinux:
+	@cp ./patches/syslinux/0014_fix_ftbfs_no_dynamic_linker.patch syslinux/
+	$(PATCH) -p1 -i 0014_fix_ftbfs_no_dynamic_linker.patch ; \
 	cd syslinux/ ; \
 	$(MAKE) -j$(MAKEFLAGS) ; \
 
 kernel-install: kernel
 	cd linux/	; \
-	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux
+	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
 	cp arch/$(ARCH)/boot/bzImage $(ROOTFS_PATH)/boot 
 
 musl-install: musl
@@ -106,5 +109,5 @@ binutils-install: binutils
 syslinux-install:
 	mkdir -p boot/isolinux
 	cd syslinux/ ; \
-	cp core/isolinux.bin ../boot/isolinux ; \
-	cp com32/elflink/ldlinux/ldlinux.c32 ../boot/isolinux
+	cp bios/core/isolinux.bin ../boot/isolinux ; \
+	cp bios/com32/elflink/ldlinux/ldlinux.c32 ../boot/isolinux

@@ -5,9 +5,6 @@ Visit [snacklinux.org](http://snacklinux.org) for downloads, wiki and more infor
 
 Building SnackLinux from source
 --------
-Note:
-Be sure to run `./createdev.sh` once to create the correct `/dev` files if you are building SnackLinux from source.
-It's recommended to build SnackLinux on a 32-bit host, so there's no need to mess around with multilib packages.
 
 
 ##### Toolchain
@@ -17,39 +14,39 @@ It's recommended to build SnackLinux on a 32-bit host, so there's no need to mes
 2. Add it to your path with `export PATH=$PATH:/path/to/toolchain/bin` 
 
 ###### Build your own 
-Compile your own toolchain with [musl-cross](https://bitbucket.org/GregorR/musl-cross)
+Compile your own toolchain with [musl-cross](https://github.com/GregorR/musl-cross)
 
 Compiling SnackLinux from source is done through the Makefile
 
-##### Linux - 4.4.5
+##### Linux - 4.15.2
 
 ```
 make kernel
 ```
 
-##### musl - 1.1.14
+##### musl - 1.1.18
 ```
 make musl
 ```
-##### BusyBox - 1.23.2
+##### BusyBox - 1.28.0
 
 ```
 make busybox
 ```
  
 
-##### Bash - 4.3
+##### Bash - 4.4.18
 
 ```
 make bash
 ```
-##### Binutils 2.26 (optional)
+##### Binutils 2.30 (optional)
 
 ```
 make binutils
 ```
 
-#### Syslinux 5.01
+#### Syslinux 6.03
 
 ```
 make syslinux
@@ -73,6 +70,8 @@ Prerequisites:
 #Base files (/etc)
 git clone https://github.com/snacsnoc/snacklinux-base.git
 cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
+#Create ./dev files
+./createdev.sh
 #fbpkg (package manager)
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
@@ -90,7 +89,7 @@ cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > 
 ```
 Then boot in qemu:
 ```
-qemu-system-i386 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
+qemu-system-x86_64 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
 ```
 
 Packages
@@ -110,6 +109,8 @@ Thanks
 Mike Chirico for http://souptonuts.sourceforge.net/cdrom.htm
 
 Tiny Core Linux distribution for inspiration and documentation http://tinycorelinux.net
+
+Gregor Richards for the many Musl compiler scripts https://github.com/GregorR
 
 Linux From Scratch for excellent documentation http://www.linuxfromscratch.org/
 

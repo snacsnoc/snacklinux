@@ -8,4 +8,4 @@ Choose an option
  SnackLinux - snacklinux.org
  (easton@geekness.eu)
 
- Kernel 4.4.5 (Mar 10 2016)
+ Kernel 4.15.2 (Feb 12 2018)

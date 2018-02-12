@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 # Download package prerequisites
 # Mirrors of the packages can also be found at http://snacklinux.org/tars/
@@ -19,13 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see http://www.gnu.org/licenses/.
 
-LINUX=linux-4.4.5
-MUSL=musl-1.1.14
-BUSYBOX=busybox-1.23.2
-BINUTILS=binutils-2.26
-BASH=bash-4.3
-SYSLINUX=syslinux-5.01
-
+source defs.sh
 
 wget http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz || exit 1
 tar xf $LINUX.tar.xz || exit 1
