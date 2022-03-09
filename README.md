@@ -1,7 +1,7 @@
 SnackLinux
 ===========
 
-Visit [snacklinux.org](http://snacklinux.org) for downloads, wiki and more information about SnackLinux.
+Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 
 Building SnackLinux from source
 --------
@@ -10,7 +10,7 @@ Building SnackLinux from source
 ##### Toolchain
 
 ###### Prebuilt
-1. Download the musl 1.1.6 cross compiler [here](https://e82b27f594c813a5a4ea5b07b06f16c3777c3b8c.googledrive.com/host/0BwnS5DMB0YQ6bDhPZkpOYVFhbk0/). See also http://musl.codu.org/
+1. Download the musl 1.1.6 cross compiler [here](http://snacklinux.geekness.eu/tars/crossx86-i486-linux-musl-1.1.6.tar.xz). See also http://musl.codu.org/
 2. Add it to your path with `export PATH=$PATH:/path/to/toolchain/bin` 
 
 ###### Build your own 
