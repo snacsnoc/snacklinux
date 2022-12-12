@@ -1,52 +1,92 @@
 SnackLinux
 ===========
 
+Archtechtures supported:
+* arm64 (in-progress)
+* x86_64 (old, but works with effort)
+
 Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 
 Building SnackLinux from source
---------
+------------------------------
+
+* Linux is preferable to build with
+ 
+
+* Mac OS is **incredibly** difficult to get working alone to build the kernel
+* An alternative to a tradtional VM is to use something like [krunvm](https://github.com/containers/krunvm)
+
+# Toolchain
 
 
-##### Toolchain
+## Build your own 
+Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
 
-###### Prebuilt
-1. Download the musl 1.1.6 cross compiler [here](http://snacklinux.geekness.eu/tars/crossx86-i486-linux-musl-1.1.6.tar.xz). See also http://musl.codu.org/
-2. Add it to your path with `export PATH=$PATH:/path/to/toolchain/bin` 
 
-###### Build your own 
-Compile your own toolchain with [musl-cross](https://github.com/GregorR/musl-cross)
 
-Compiling SnackLinux from source is done through the Makefile
 
-##### Linux - 4.15.2
+#### gcc
+```
+arch -arm64 brew install gcc@12
+```
+
+If you have an alternate version of gcc installed, create symlinks:
+```
+cd /opt/homebrew/bin
+ln -s gcc-12 gcc 
+ln -s g++-12 g++
+```
+
+### arm64
+
+
+```
+TARGET=aarch64-linux-musl make
+TARGET=aarch64-linux-musl make install
+```
+
+### TODO:x86_64
+
+
+
+Installs to `output/` 
+Add the toolchain to your shell's PATH:
+`export PATH=$PATH:/path/to/out/bin`
+
+# Building SnackLinux
+
+## Versions
+See `defs.sh` for kernel and package versions
+
+##### Linux - 
 
 ```
 make kernel
 ```
 
-##### musl - 1.1.18
+##### musl - 
 ```
 make musl
 ```
-##### BusyBox - 1.28.0
+##### BusyBox - 
 
 ```
 make busybox
 ```
  
 
-##### Bash - 4.4.18
+##### Bash - 
 
 ```
 make bash
 ```
-##### Binutils 2.30 (optional)
+##### Binutils (optional)
 
 ```
 make binutils
 ```
 
-#### Syslinux 6.03
+#### Syslinux
 
 ```
 make syslinux
@@ -64,7 +104,7 @@ If you would also like to install binutils, use:
 make binutils-install
 ```
 
-##### Booting
+# Booting
 Prerequisites:
 ```
 #Base files (/etc)
@@ -76,18 +116,23 @@ cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
 ```
-###### ISO
+## ISO
 
 Run `make iso`. The output ISO will be in `iso/`
 
 Note: you do not have to have the toolchain to create the ISO
 
-###### qemu
+## qemu
 Create a gzipped rootfs by running:
 ```
 cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > ../rootfs.gz 
 ```
 Then boot in qemu:
+
+## TODO: arm64:
+
+
+## x86_64:
 ```
 qemu-system-x86_64 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
 ```
