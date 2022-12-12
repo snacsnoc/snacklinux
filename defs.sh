@@ -2,7 +2,7 @@
 
 # Package versions
 
-LINUX=linux-4.15.2
+LINUX=linux-6.0.12
 MUSL=musl-1.1.18
 BUSYBOX=busybox-1.28.0
 BINUTILS=binutils-2.30
