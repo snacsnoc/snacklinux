@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download package prerequisites
-# Mirrors of the packages can also be found at http://snacklinux.org/tars/
+# Mirrors of the packages can also be found at http://snacklinux.geekness.eu/tars/
 # Original script from gcc
 #
 # (C) 2010 Free Software Foundation
@@ -21,7 +21,7 @@
 
 source defs.sh
 
-wget http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz || exit 1
+wget http://kernel.org/pub/linux/kernel/v6.x/$LINUX.tar.xz || exit 1
 tar xf $LINUX.tar.xz || exit 1
 ln -sf $LINUX linux || exit 1
 
