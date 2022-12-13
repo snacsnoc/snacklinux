@@ -6,18 +6,24 @@ PATCH=/usr/bin/patch
 
 NOW=`date +'%d.%m.%y'`
 
-CDIMAGE=snacklinux_x86_64
+
+# Set default architechture
+ifndef ARCH	
+	ARCH=x86_64
+endif
+
+ifndef JOBS
+	JOBS=-j8
+endif
+
+CDIMAGE=snacklinux_
+CDIMAGE+=ARCH
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
-
-ARCH=x86_64
-
-MAKEFLAGS=-j8
 
 PWD=$(shell pwd)
 
 ROOTFS_PATH=/opt/snacklinux_rootfs
-
 
 .PHONY: all iso kernel docker musl busybox bash binutils syslinux
 
@@ -47,39 +53,53 @@ clean:
 	rm -f docker
 
 kernel: 
-	cp ./configs/linux/.config linux/
+ifeq ($(ARCH), aarch64)
+	# Set ARCH to the kernel equivalent to prevent reading from env vars
+	ARCH=arm64
+	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=$(ARCH) -j$(MAKEFLAGS) bzImage
+	$(MAKE) ARCH=arm64 CROSS_COMPILE=aarch64-linux-musl- $(JOBS) Image 
+else
+	cp ./configs/linux/.config-x86_64 linux/.config
+	cd linux/	; \
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+endif
+	
 
 musl:
 	cd musl/ ; \
 	CROSS_COMPILE=$(ARCH)-musl-linux- ./configure --prefix=/ ; \
-	$(MAKE) -j$(MAKEFLAGS) ; \
+	$(MAKE) $(JOBS) ; \
 
 busybox:
-	@cp ./configs/busybox/.config busybox/ 
+ifeq ($(ARCH), aarch64)
+	@cp ./configs/busybox/.config-arm64 busybox/
+else
+	@cp ./configs/busybox/.config-x86_64 busybox/ 
 	@cp ./patches/busybox/ifplugd.patch busybox/
 	cd busybox/	; \
-	$(PATCH) -p1 -i ifplugd.patch ; \
-	$(MAKE) -j$(MAKEFLAGS) ; \
+	$(PATCH) -p1 -i ifplugd.patch
+endif	
+	cd busybox/	; \
+	$(MAKE) $(JOBS) ; \
 
 bash:
 	cd bash/ ; \
 	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
-	$(MAKE) -j$(MAKEFLAGS) ; \
+	$(MAKE) $(JOBS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
 	./configure --target=$(ARCH)-musl-linux  --host=$(ARCH)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
-	$(MAKE) -j$(MAKEFLAGS) ; \
+	$(MAKE) $(JOBS) ; \
 
 syslinux:
 	@cp ./patches/syslinux/0014_fix_ftbfs_no_dynamic_linker.patch syslinux/
 	$(PATCH) -p1 -i 0014_fix_ftbfs_no_dynamic_linker.patch ; \
 	cd syslinux/ ; \
-	$(MAKE) -j$(MAKEFLAGS) ; \
+	$(MAKE) $(JOBS) ; \
 
 kernel-install: kernel
 	cd linux/	; \
