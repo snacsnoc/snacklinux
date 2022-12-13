@@ -1,5 +1,9 @@
 SnackLinux
 ===========
+SnackLinux is a minimal distribution using musl + busybox + bleeding edge kernel + bash.
+The goal is to have a footprint of less than 20MB. Initially the project was created to run on old 486 CPUs with the latest software. I'm currently working on an arm64 port of SnackLinux and updating as I go.
+
+
 
 Archtechtures supported:
 * arm64 (in-progress)
