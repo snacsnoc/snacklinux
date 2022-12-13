@@ -10,20 +10,18 @@ Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and m
 Building SnackLinux from source
 ------------------------------
 
+
+# Build system
+
 * Linux is preferable to build with
  
-
-* Mac OS is **incredibly** difficult to get working alone to build the kernel
+**Debian**
+```
+apt-get install build-essential git
+``` 
+**Mac OS***
+* Mac OS is **incredibly** difficult to get working alone to build the kernel, otherwise cross-compiling works
 * An alternative to a tradtional VM is to use something like [krunvm](https://github.com/containers/krunvm)
-
-# Toolchain
-
-
-## Build your own 
-Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
-
-
-
 
 #### gcc
 ```
@@ -36,6 +34,13 @@ cd /opt/homebrew/bin
 ln -s gcc-12 gcc 
 ln -s g++-12 g++
 ```
+
+# Toolchain
+
+
+## Build your own 
+Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
+
 
 ### arm64
 
@@ -55,8 +60,28 @@ Add the toolchain to your shell's PATH:
 
 # Building SnackLinux
 
+## Environment vars
+
+`JOBS` Set number of parallel jobs to create, defaults to -j8
+Example
+`make busybox JOBS=-j12`
+
+### Architechtures
+
+Building for arm64:
+
+`ARCH=aarch64`
+Example
+`make busybox ARCH=aarch64 JOBS=-j4`
+Defaults to x86_64
+
+
+
 ## Versions
 See `defs.sh` for kernel and package versions
+
+
+
 
 ##### Linux - 
 
