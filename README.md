@@ -1,7 +1,17 @@
 SnackLinux
 ===========
-SnackLinux is a minimal distribution using musl + busybox + bleeding edge kernel + bash.
-The goal is to have a footprint of less than 20MB. Initially the project was created to run on old 486 CPUs with the latest software. I'm currently working on an arm64 port of SnackLinux and updating as I go.
+:computer: SnackLinux is an ultra minimal Linux distribution 
+:wrench: Utilizing a recent 6.x kernel with BusyBox, musl and Bash 
+:small_orange_diamond: Built from scratch with a footprint of less than 20MB 
+:file_folder:	Bash-based package manager [fbpkg](https://github.com/snacsnoc/fbpkg)
+:package: x86 has 31 packages, including a working gcc toolchain and other GNU utilities 
+:whale: (in-progress) Docker support 
+:battery: (in-progress) arm64 support
+
+The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to `/opt/snacklinux_rootfs`, anything in there is included in the final build.
+
+Initially the project was created to run on old 486 CPUs with the latest software. I'm currently working on an arm64 port of SnackLinux and updating as I go.
+
 
 
 
