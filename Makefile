@@ -73,10 +73,10 @@ musl:
 
 busybox:
 ifeq ($(ARCH), aarch64)
-	@cp ./configs/busybox/.config-arm64 busybox/
+	@cp ./configs/busybox/.config-arm64 busybox/.config
 else
-	@cp ./configs/busybox/.config-x86_64 busybox/ 
-	@cp ./patches/busybox/ifplugd.patch busybox/
+	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
+	@cp ./patches/busybox/ifplugd.patch busybox/ ; \
 	cd busybox/	; \
 	$(PATCH) -p1 -i ifplugd.patch
 endif	
