@@ -14,7 +14,7 @@ SnackLinux
 
 :battery: (in-progress) arm64 support
 
-The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to `/opt/snacklinux_rootfs`, anything in there is included in the final build.
+The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to `/opt/snacklinux_rootfs`, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
 
 Initially the project was created to run on old 486 CPUs with the latest software. I'm currently working on an arm64 port of SnackLinux and updating as I go.
 
@@ -37,10 +37,10 @@ Building SnackLinux from source
  
 **Debian**
 ```
-apt-get install build-essential git
+apt-get install build-essential git libgmp-dev libmpc-dev flex bison bc
 ``` 
 **Mac OS***
-* Mac OS is **incredibly** difficult to get working alone to build the kernel, otherwise cross-compiling works
+* Mac OS is **incredibly** difficult to get working alone to build the kernel, otherwise cross-compiling packages works
 * An alternative to a tradtional VM is to use something like [krunvm](https://github.com/containers/krunvm)
 
 #### gcc
@@ -90,7 +90,7 @@ Example
 
 Building for arm64:
 
-`ARCH=aarch64`
+`EXPORT ARCH=aarch64`
 Example
 `make busybox ARCH=aarch64 JOBS=-j4`
 Defaults to x86_64
@@ -101,6 +101,9 @@ Defaults to x86_64
 See `defs.sh` for kernel and package versions
 
 
+## Download source tars and link
+
+`bash ./download_prereq.sh `
 
 
 ##### Linux - 
@@ -170,7 +173,7 @@ Note: you do not have to have the toolchain to create the ISO
 ## qemu
 Create a gzipped rootfs by running:
 ```
-cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > ../rootfs.gz 
+cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > ~/rootfs.gz 
 ```
 Then boot in qemu:
 
