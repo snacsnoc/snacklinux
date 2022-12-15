@@ -101,50 +101,69 @@ Defaults to x86_64
 See `defs.sh` for kernel and package versions
 
 
-## Download source tars and link
+## Getting started
+
+
+Download source tars and link
 
 `bash ./download_prereq.sh `
 
-
-##### Linux - 
+Compile the kernel
 
 ```
 make kernel
 ```
 
-##### musl - 
+Build musl, Bash and BusyBox
+```
+make system
+```
+
+Install to `/opt/snacklinux_rootfs` directory
+
+```
+make install
+```
+
+Next step: [booting](#Booting)
+
+
+#### Compile individual packages
+
+
+#### Linux - 
+
+```
+make kernel
+```
+
+#### musl - 
 ```
 make musl
 ```
-##### BusyBox - 
+#### BusyBox - 
 
 ```
 make busybox
 ```
  
-
-##### Bash - 
+#### Bash - 
 
 ```
 make bash
 ```
-##### Binutils (optional)
+#### Binutils (optional)
 
 ```
 make binutils
 ```
 
-#### Syslinux
+### Syslinux
 
 ```
 make syslinux
 ```
 
-### Installing to rootfs directory
-
-```
-make install
-```
 
 If you would also like to install binutils, use:
 
