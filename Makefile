@@ -31,7 +31,7 @@ all: iso
 
 install: musl-install busybox-install bash-install strip-fs
 	
-	
+system: musl busybox bash	
 
 iso: 
 	@mkdir -p iso boot/isolinux
@@ -68,6 +68,7 @@ endif
 
 musl:
 	cd musl/ ; \
+	CC=$(ARCH)-musl-linux-gcc ./configure --prefix=/ ; \
 	CROSS_COMPILE=$(ARCH)-musl-linux- ./configure --prefix=/ ; \
 	$(MAKE) $(JOBS) ; \
 
