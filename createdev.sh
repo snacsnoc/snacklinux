@@ -46,6 +46,11 @@ mkdir -v /opt/snacklinux_rootfs/dev/shm
 mkdir -v /opt/snacklinux_rootfs/dev/pts
 
 mkdir -v /opt/snacklinux_rootfs/proc
+
+mkdir -v /opt/snacklinux_rootfs/usr
+mkdir -v  /opt/snacklinux_rootfs/usr/bin
+
 mkdir -v /opt/snacklinux_rootfs/tmp
+
 
 mkdir -v /opt/snacklinux_rootfs/sys
