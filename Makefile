@@ -12,6 +12,7 @@ ifndef ARCH
 	ARCH=x86_64
 endif
 
+
 ifndef JOBS
 	JOBS=-j8
 endif
@@ -47,10 +48,16 @@ docker:
 	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C $(ROOTFS_PATH)/ .
 	mv snacklinux-$(NOW)-docker.tar docker/
 
+# Delete build files
 clean:
 	rm -rf iso
 	rm -f boot/isolinux/linux*
-	rm -f docker
+	rm -f docker	
+	# Clean package build dirs
+	cd linux && make clean
+	cd musl && make clean
+	cd busybox && make clean
+	cd bash && make clean
 
 kernel: 
 ifeq ($(ARCH), aarch64)
@@ -65,7 +72,11 @@ else
 	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
 endif
 	
-
+# Build musl
+#
+# Upstream documentation: https://musl.libc.org/doc/1.1.24/manual.html under "Build Options"
+#
+# Must be clean directory to run make (go figure)
 musl:
 	cd musl/ ; \
 	CC=$(ARCH)-linux-musl-gcc ./configure --prefix=/ ; \
@@ -85,7 +96,7 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-static-link --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
+	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
