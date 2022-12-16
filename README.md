@@ -214,8 +214,7 @@ qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -ini
 
 Mac OS:
 ```
-qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -bios "/opt/homebrew/Cellar/qemu/7.1.0/share/qemu/edk2-aarch64-code.fd" -accel hvf -device virtio-gpu-pci
-
+qemu-system-aarch64 -M virt,highmem=off -kernel Image -initrd rootfs.gz -append "root=/dev/ram" -m 128  -boot menu=off -cpu max -nodefaults -boot d -bios "/opt/homebrew/Cellar/qemu/7.1.0/share/qemu/edk2-aarch64-code.fd" -device virtio-gpu-pci  -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard -accel hvf 
 ```
 
 Run a VNC server with qemu:
