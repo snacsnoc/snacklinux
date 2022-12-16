@@ -108,6 +108,12 @@ Download source tars and link
 
 `bash ./download_prereq.sh `
 
+Set the amount of parallel jobs to run when using make
+```
+export ARCH=aarch64
+export JOBS=j16
+```
+
 Compile the kernel
 
 ```
