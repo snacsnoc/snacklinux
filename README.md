@@ -90,9 +90,8 @@ Example
 
 Building for arm64:
 
-`EXPORT ARCH=aarch64`
 Example
-`make busybox ARCH=aarch64 JOBS=-j4`
+`make busybox arch=aarch64 JOBS=-j4`
 Defaults to x86_64
 
 
@@ -110,7 +109,6 @@ Download source tars and link
 
 Set the amount of parallel jobs to run when using make
 ```
-export ARCH=aarch64
 export JOBS=j16
 ```
 
@@ -164,7 +162,7 @@ make bash
 make binutils
 ```
 
-### Syslinux
+#### Syslinux
 
 ```
 make syslinux
@@ -177,6 +175,12 @@ If you would also like to install binutils, use:
 make binutils-install
 ```
 
+#### stripping symbols
+
+This target strips all debug symbols files matching LSB executable, shared object or ar archive 
+```
+make ARCH=arm64 strip-fs
+```
 # Booting
 Prerequisites:
 ```
@@ -202,8 +206,20 @@ cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > 
 ```
 Then boot in qemu:
 
-## TODO: arm64:
+## arm64:
+Linux:
+```
+qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci
+```
 
+Mac OS:
+```
+qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -bios "/opt/homebrew/Cellar/qemu/7.1.0/share/qemu/edk2-aarch64-code.fd" -accel hvf -device virtio-gpu-pci
+
+```
+
+Run a VNC server with qemu:
+`-vnc 12.34.56.78:0`
 
 ## x86_64:
 ```

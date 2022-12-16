@@ -1,15 +1,15 @@
 GENISOIMAGE=/usr/bin/genisoimage
 MAKE=/usr/bin/make
 GIT=/usr/bin/git
-STRIP=/usr/bin/strip
+STRIP=$(arch)-linux-musl-strip
 PATCH=/usr/bin/patch
 
 NOW=`date +'%d.%m.%y'`
 
 
 # Set default architechture
-ifndef ARCH	
-	ARCH=x86_64
+ifndef arch	
+	arch=x86_64
 endif
 
 
@@ -18,7 +18,7 @@ ifndef JOBS
 endif
 
 CDIMAGE=snacklinux_
-CDIMAGE+=ARCH
+CDIMAGE+=arch
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
 
@@ -60,16 +60,14 @@ clean:
 	cd bash && make clean
 
 kernel: 
-ifeq ($(ARCH), aarch64)
-	# Set ARCH to the kernel equivalent to prevent reading from env vars
-	ARCH=arm64
+ifeq ($(arch), aarch64)
 	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
 	$(MAKE) ARCH=arm64 CROSS_COMPILE=aarch64-linux-musl- $(JOBS) Image 
 else
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+	$(MAKE) arch=$(arch) CROSS_COMPILE=$(arch)-musl-linux- $(JOBS) bzImage
 endif
 	
 # Build musl
@@ -79,11 +77,11 @@ endif
 # Must be clean directory to run make (go figure)
 musl:
 	cd musl/ ; \
-	CC=$(ARCH)-linux-musl-gcc ./configure --prefix=/ ; \
+	CC=$(arch)-linux-musl-gcc ./configure --prefix=/ ; \
 	$(MAKE) $(JOBS) ; \
 
 busybox:
-ifeq ($(ARCH), aarch64)
+ifeq ($(arch), aarch64)
 	@cp ./configs/busybox/.config-arm64 busybox/.config
 else
 	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
@@ -96,14 +94,14 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
+	CROSS_COMPILE=$(arch)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(arch)-linux-musl --target=$(arch)-linux-musl --disable-nls -C	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
-	./configure --target=$(ARCH)-musl-linux  --host=$(ARCH)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
+	./configure --target=$(arch)-musl-linux  --host=$(arch)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
 	$(MAKE) $(JOBS) ; \
 
 syslinux:
@@ -113,14 +111,14 @@ syslinux:
 	$(MAKE) $(JOBS) ; \
 
 kernel-install: kernel
-ifeq ($(ARCH), aarch64)
+ifeq ($(arch), aarch64)
 	cd linux ; \
 	cp arch/arm64/boot/Image ../boot/isolinux ; \
 	cp arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
 else	
 	cd linux/	; \
-	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
-	cp arch/$(ARCH)/boot/bzImage $(ROOTFS_PATH)/boot 
+	cp arch/$(arch)/boot/bzImage ../boot/isolinux ; \
+	cp arch/$(arch)/boot/bzImage $(ROOTFS_PATH)/boot 
 endif
 
 musl-install: musl
@@ -151,5 +149,5 @@ syslinux-install:
 strip-fs:
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "LSB executable"     | cut -f 1 -d : | xargs $(STRIP) --strip-all      2>/dev/null || true
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "shared object"      | cut -f 1 -d : | xargs $(STRIP) --strip-unneeded 2>/dev/null || true
-	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "current ar archive" | cut -f 1 -d : | xargs $(STRIP) --strip-debug
+	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "current ar archive" | cut -f 1 -d : | xargs $(STRIP) --strip-debug	   2>/dev/null || true
 	#@$(STRIP) $(ROOTFS_PATH)/bin/bash 
