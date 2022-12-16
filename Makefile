@@ -68,8 +68,7 @@ endif
 
 musl:
 	cd musl/ ; \
-	CC=$(ARCH)-musl-linux-gcc ./configure --prefix=/ ; \
-	CROSS_COMPILE=$(ARCH)-musl-linux- ./configure --prefix=/ ; \
+	CC=$(ARCH)-linux-musl-gcc ./configure --prefix=/ ; \
 	$(MAKE) $(JOBS) ; \
 
 busybox:
