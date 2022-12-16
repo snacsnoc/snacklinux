@@ -115,8 +115,8 @@ syslinux:
 kernel-install: kernel
 ifeq ($(ARCH), aarch64)
 	cd linux ; \
-	cp arch/$(ARCH)/boot/Image ../boot/isolinux ; \
-	cp arch/$(ARCH)/boot/Image $(ROOTFS_PATH)/boot 
+	cp arch/arm64/boot/Image ../boot/isolinux ; \
+	cp arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
 else	
 	cd linux/	; \
 	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
