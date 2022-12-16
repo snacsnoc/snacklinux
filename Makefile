@@ -17,8 +17,8 @@ ifndef JOBS
 	JOBS=-j8
 endif
 
-CDIMAGE=snacklinux_
-CDIMAGE+=arch
+CDIMAGE=snacklinux_$(arch)
+
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
 
