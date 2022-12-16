@@ -113,9 +113,15 @@ syslinux:
 	$(MAKE) $(JOBS) ; \
 
 kernel-install: kernel
+ifeq ($(ARCH), aarch64)
+	cd linux ; \
+	cp arch/$(ARCH)/boot/Image ../boot/isolinux ; \
+	cp arch/$(ARCH)/boot/Image $(ROOTFS_PATH)/boot 
+else	
 	cd linux/	; \
 	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
 	cp arch/$(ARCH)/boot/bzImage $(ROOTFS_PATH)/boot 
+endif
 
 musl-install: musl
 	cd musl/ ; \
@@ -131,7 +137,6 @@ busybox-install: busybox
 bash-install: bash		
 	cd bash/ ; \
 	$(MAKE) DESTDIR=$(ROOTFS_PATH) install
-	@$(STRIP) $(ROOTFS_PATH)/bin/bash 
 
 binutils-install: binutils
 	cd binutils/ ; \
@@ -147,3 +152,4 @@ strip-fs:
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "LSB executable"     | cut -f 1 -d : | xargs $(STRIP) --strip-all      2>/dev/null || true
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "shared object"      | cut -f 1 -d : | xargs $(STRIP) --strip-unneeded 2>/dev/null || true
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "current ar archive" | cut -f 1 -d : | xargs $(STRIP) --strip-debug
+	#@$(STRIP) $(ROOTFS_PATH)/bin/bash 
