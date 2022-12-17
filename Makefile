@@ -57,7 +57,7 @@ clean:
 	cd linux && make clean
 	cd musl && make clean
 	cd busybox && make clean
-	cd bash && make clean
+	cd bash && make distclean
 
 kernel: 
 ifeq ($(ARCH), aarch64)
@@ -123,8 +123,8 @@ syslinux:
 kernel-install: kernel
 ifeq ($(ARCH), aarch64)
 	cd linux ; \
-	cp arch/arm64/boot/Image ../boot/isolinux ; \
-	cp arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
+	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
+	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
 else	
 	cd linux/	; \
 	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
