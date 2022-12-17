@@ -1,15 +1,15 @@
 GENISOIMAGE=/usr/bin/genisoimage
 MAKE=/usr/bin/make
 GIT=/usr/bin/git
-STRIP=$(arch)-linux-musl-strip
+STRIP=$(ARCH)-linux-musl-strip
 PATCH=/usr/bin/patch
 
 NOW=`date +'%d.%m.%y'`
 
 
-# Set default architechture
-ifndef arch	
-	arch=x86_64
+# Set default architecture
+ifndef ARCH	
+	ARCH=x86_64
 endif
 
 
@@ -17,7 +17,7 @@ ifndef JOBS
 	JOBS=-j8
 endif
 
-CDIMAGE=snacklinux_$(arch)
+CDIMAGE=snacklinux_$(ARCH)
 
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
@@ -60,14 +60,14 @@ clean:
 	cd bash && make clean
 
 kernel: 
-ifeq ($(arch), aarch64)
+ifeq ($(ARCH), aarch64)
 	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=arm64 CROSS_COMPILE=aarch64-linux-musl- $(JOBS) Image 
+	$(MAKE) ARCH=arm64 CROSS_COMPILE=aARCH64-linux-musl- $(JOBS) Image 
 else
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) arch=$(arch) CROSS_COMPILE=$(arch)-musl-linux- $(JOBS) bzImage
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
 endif
 	
 # Build musl
@@ -77,11 +77,11 @@ endif
 # Must be clean directory to run make (go figure)
 musl:
 	cd musl/ ; \
-	CC=$(arch)-linux-musl-gcc ./configure --prefix=/ ; \
+	CC=$(ARCH)-linux-musl-gcc ./configure --prefix=/ ; \
 	$(MAKE) $(JOBS) ; \
 
 busybox:
-ifeq ($(arch), aarch64)
+ifeq ($(ARCH), aarch64)
 	@cp ./configs/busybox/.config-arm64 busybox/.config
 else
 	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
@@ -94,31 +94,32 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(arch)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(arch)-linux-musl --target=$(arch)-linux-musl --disable-nls -C	; \
+	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
-	./configure --target=$(arch)-musl-linux  --host=$(arch)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
+	./configure --target=$(ARCH)-musl-linux  --host=$(ARCH)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
 	$(MAKE) $(JOBS) ; \
 
 syslinux:
+	# Check if this is still needed (probably not)
 	@cp ./patches/syslinux/0014_fix_ftbfs_no_dynamic_linker.patch syslinux/
 	$(PATCH) -p1 -i 0014_fix_ftbfs_no_dynamic_linker.patch ; \
 	cd syslinux/ ; \
 	$(MAKE) $(JOBS) ; \
 
 kernel-install: kernel
-ifeq ($(arch), aarch64)
+ifeq ($(ARCH), aarch64)
 	cd linux ; \
 	cp arch/arm64/boot/Image ../boot/isolinux ; \
 	cp arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
 else	
 	cd linux/	; \
-	cp arch/$(arch)/boot/bzImage ../boot/isolinux ; \
-	cp arch/$(arch)/boot/bzImage $(ROOTFS_PATH)/boot 
+	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
+	cp arch/$(ARCH)/boot/bzImage $(ROOTFS_PATH)/boot 
 endif
 
 musl-install: musl
