@@ -73,7 +73,7 @@ else ifeq ($(ARCH), x86_64)
 else ifeq ($(ARCH), i486)	
 	cp ./configs/linux/.config-x86 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86 CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+	$(MAKE) ARCH=x86 CROSS_COMPILE=$(ARCH)-linux-musl- $(JOBS) bzImage
 endif
 	
 # Build musl
