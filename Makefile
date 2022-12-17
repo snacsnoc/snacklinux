@@ -9,7 +9,7 @@ NOW=`date +'%d.%m.%y'`
 
 # Set default architecture
 ifndef ARCH	
-	ARCH=x86_64
+	ARCH=i486
 endif
 
 
@@ -63,11 +63,17 @@ kernel:
 ifeq ($(ARCH), aarch64)
 	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=arm64 CROSS_COMPILE=aARCH64-linux-musl- $(JOBS) Image 
-else
+	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(ARCH)-linux-musl- $(JOBS) Image 
+
+else ifeq ($(ARCH), x86_64)
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+
+else ifeq ($(ARCH), i486)	
+	cp ./configs/linux/.config-x86 linux/.config
+	cd linux/	; \
+	$(MAKE) ARCH=x86 CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
 endif
 	
 # Build musl
@@ -83,11 +89,14 @@ musl:
 busybox:
 ifeq ($(ARCH), aarch64)
 	@cp ./configs/busybox/.config-arm64 busybox/.config
-else
+else ifeq ($(ARCH), x86_64)
+
 	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
 	@cp ./patches/busybox/ifplugd.patch busybox/ ; \
 	cd busybox/	; \
 	$(PATCH) -p1 -i ifplugd.patch
+else ifeq ($(ARCH), i486)
+	@cp ./configs/busybox/.config-x86 busybox/.config
 endif	
 	cd busybox/	; \
 	$(MAKE) $(JOBS) ; \
