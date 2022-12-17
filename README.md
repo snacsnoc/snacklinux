@@ -23,13 +23,14 @@ SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initia
 
 
 Archtechtures supported:
-* arm64 
-* x86_64 (old, but works with effort)
+* arm64
+* i486 (updating)
+* amd64/x86_64 (old, but works with effort)
 
 Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 
 Building SnackLinux from source
-------------------------------
+-------------------------------
 
 
 # Build system
@@ -38,8 +39,13 @@ Building SnackLinux from source
  
 **Debian**
 ```
-apt-get install build-essential git libgmp-dev libmpc-dev flex bison bc
+apt-get install build-essential git libgmp-dev libmpc-dev flex bison bc 
 ``` 
+Optional:
+```
+apt-get install genisoimage #used for generating x86 ISO images
+```
+
 **Mac OS***
 * Mac OS is **incredibly** difficult to get working alone to build the kernel, otherwise cross-compiling packages works
 * An alternative to a tradtional VM is to use something like [krunvm](https://github.com/containers/krunvm)
@@ -65,14 +71,20 @@ Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/
 
 ### arm64
 
-
 ```
 TARGET=aarch64-linux-musl make
 TARGET=aarch64-linux-musl make install
 ```
 
-### TODO:x86_64
+### x86
 
+```
+TARGET=i486-linux-musl make
+TARGET=i486-linux-musl make install
+```
+
+
+### TODO:x86_64
 
 
 Installs to `output/` 
@@ -88,12 +100,21 @@ Example
 `make busybox JOBS=-j12`
 
 ### Architechtures
+Change target arch by using switches with make:
+```
+arch=aarch64
+arch=x86
+arch=x86_64
+```
 
 Building for arm64:
 
 Example
 `make busybox arch=aarch64 JOBS=-j4`
-Defaults to x86_64
+
+Defaults to x86
+
+
 
 
 
