@@ -10,19 +10,20 @@ SnackLinux
 
 :package: x86 has 31 packages, including a working gcc toolchain and other GNU utilities 
 
+:battery: arm64 support
+
 :whale: (in-progress) Docker support 
 
-:battery: (in-progress) arm64 support
 
-The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to `/opt/snacklinux_rootfs`, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
+The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
 
-Initially the project was created to run on old 486 CPUs with the latest software. I'm currently working on an arm64 port of SnackLinux and updating as I go.
+SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM.
 
 
 
 
 Archtechtures supported:
-* arm64 (in-progress)
+* arm64 
 * x86_64 (old, but works with effort)
 
 Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
@@ -209,7 +210,7 @@ Then boot in qemu:
 ## arm64:
 Linux:
 ```
-qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci
+qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard
 ```
 
 Mac OS:
@@ -248,6 +249,8 @@ Gregor Richards for the many Musl compiler scripts https://github.com/GregorR
 Linux From Scratch for excellent documentation http://www.linuxfromscratch.org/
 
 The Arch Linux wiki https://wiki.archlinux.org/
+
+Rich Felker for creating musl-cross-make and make building so easy https://github.com/richfelker/musl-cross-make
 
 Here are links to the software used in SnackLinux:
 
