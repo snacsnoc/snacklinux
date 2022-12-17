@@ -68,6 +68,7 @@ ln -s g++-12 g++
 ## Build your own 
 Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
 
+`git clone https://github.com/richfelker/musl-cross-make.git`
 
 ### arm64
 
@@ -201,7 +202,7 @@ make binutils-install
 
 This target strips all debug symbols files matching LSB executable, shared object or ar archive 
 ```
-make ARCH=arm64 strip-fs
+make arch=arm64 strip-fs
 ```
 # Booting
 Prerequisites:
@@ -209,8 +210,10 @@ Prerequisites:
 #Base files (/etc)
 git clone https://github.com/snacsnoc/snacklinux-base.git
 cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
+
 #Create ./dev files
 ./createdev.sh
+
 #fbpkg (package manager)
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
@@ -234,13 +237,19 @@ Linux:
 qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard
 ```
 
-Mac OS:
+Mac OS (M1):
 ```
 qemu-system-aarch64 -M virt,highmem=off -kernel Image -initrd rootfs.gz -append "root=/dev/ram" -m 128  -boot menu=off -cpu max -nodefaults -boot d -bios "/opt/homebrew/Cellar/qemu/7.1.0/share/qemu/edk2-aarch64-code.fd" -device virtio-gpu-pci  -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard -accel hvf 
 ```
 
 Run a VNC server with qemu:
 `-vnc 12.34.56.78:0`
+
+## x86:
+```
+qemu-system-i386 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
+```
+
 
 ## x86_64:
 ```
