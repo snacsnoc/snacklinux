@@ -103,7 +103,7 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls -C	; \
+	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls 	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
