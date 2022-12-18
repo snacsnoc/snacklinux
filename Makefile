@@ -130,11 +130,11 @@ kernel-install: kernel
 ifeq ($(TARGET), aarch64)
 	cd linux ; \
 	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
-	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
+	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot/Image 
 else ifeq ($(TARGET), i486)	
 	cd linux/	; \
 	cp arch/x86/boot/bzImage ../boot/isolinux ; \
-	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot 
+	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot/bzImage 
 endif
 
 musl-install: musl
