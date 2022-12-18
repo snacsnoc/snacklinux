@@ -103,7 +103,8 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(ARCH)-linux-musl- ./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls 	; \
+	CROSS_COMPILE=$(ARCH)-linux-musl- ; \
+	./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls 	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
@@ -125,10 +126,10 @@ ifeq ($(ARCH), aarch64)
 	cd linux ; \
 	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
 	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
-else	
+else ifeq ($(ARCH), i486)	
 	cd linux/	; \
-	cp arch/$(ARCH)/boot/bzImage ../boot/isolinux ; \
-	cp arch/$(ARCH)/boot/bzImage $(ROOTFS_PATH)/boot 
+	cp arch/x86/boot/bzImage ../boot/isolinux ; \
+	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot 
 endif
 
 musl-install: musl
