@@ -1,7 +1,7 @@
 GENISOIMAGE=/usr/bin/genisoimage
 MAKE=/usr/bin/make
 GIT=/usr/bin/git
-STRIP=$(ARCH)-linux-musl-strip
+STRIP=$(TARGET)-linux-musl-strip
 PATCH=/usr/bin/patch
 
 NOW=`date +'%d.%m.%y'`
@@ -17,7 +17,7 @@ ifndef JOBS
 	JOBS=-j8
 endif
 
-CDIMAGE=snacklinux_$(ARCH)
+CDIMAGE=snacklinux_$(TARGET)
 
 
 GIT_URL=https://github.com/snacsnoc/snacklinux.git
@@ -60,20 +60,20 @@ clean:
 	cd bash && make distclean
 
 kernel: 
-ifeq ($(ARCH), aarch64)
+ifeq ($(TARGET), aarch64)
 	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(ARCH)-linux-musl- $(JOBS) Image 
+	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) Image 
 
-else ifeq ($(ARCH), x86_64)
+else ifeq ($(TARGET), x86_64)
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(ARCH)-musl-linux- $(JOBS) bzImage
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-musl-linux- $(JOBS) bzImage
 
-else ifeq ($(ARCH), i486)	
+else ifeq ($(TARGET), i486)	
 	cp ./configs/linux/.config-x86 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86 CROSS_COMPILE=$(ARCH)-linux-musl- $(JOBS) bzImage
+	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) bzImage
 endif
 	
 # Build musl
@@ -82,20 +82,25 @@ endif
 #
 # Must be clean directory to run make (go figure)
 musl:
+ifeq ($(TARGET), aarch64)
 	cd musl/ ; \
-	CC=$(ARCH)-linux-musl-gcc ./configure --prefix=/ ; \
-	$(MAKE) $(JOBS) ; \
-
+	CC=$(TARGET)-linux-musl-gcc ./configure --prefix=/ ; \
+	$(MAKE) $(JOBS) 
+else ifeq ($(TARGET), i486)
+	cd musl/ ; \
+	CC=$(TARGET)-linux-musl-gcc ./configure --prefix=/ ; \
+	$(MAKE) $(JOBS) 
+endif
 busybox:
-ifeq ($(ARCH), aarch64)
+ifeq ($(TARGET), aarch64)
 	@cp ./configs/busybox/.config-arm64 busybox/.config
-else ifeq ($(ARCH), x86_64)
+else ifeq ($(TARGET), x86_64)
 
 	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
 	@cp ./patches/busybox/ifplugd.patch busybox/ ; \
 	cd busybox/	; \
 	$(PATCH) -p1 -i ifplugd.patch
-else ifeq ($(ARCH), i486)
+else ifeq ($(TARGET), i486)
 	@cp ./configs/busybox/.config-x86 busybox/.config
 endif	
 	cd busybox/	; \
@@ -103,15 +108,15 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(ARCH)-linux-musl- ; \
-	./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(ARCH)-linux-musl --target=$(ARCH)-linux-musl --disable-nls 	; \
+	CROSS_COMPILE=$(TARGET)-linux-musl- ; \
+	./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(TARGET)-linux-musl --target=$(TARGET)-linux-musl --disable-nls 	; \
 	$(MAKE) $(JOBS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
-	./configure --target=$(ARCH)-musl-linux  --host=$(ARCH)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
+	./configure --target=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
 	$(MAKE) $(JOBS) ; \
 
 syslinux:
@@ -122,11 +127,11 @@ syslinux:
 	$(MAKE) $(JOBS) ; \
 
 kernel-install: kernel
-ifeq ($(ARCH), aarch64)
+ifeq ($(TARGET), aarch64)
 	cd linux ; \
 	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
 	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot 
-else ifeq ($(ARCH), i486)	
+else ifeq ($(TARGET), i486)	
 	cd linux/	; \
 	cp arch/x86/boot/bzImage ../boot/isolinux ; \
 	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot 

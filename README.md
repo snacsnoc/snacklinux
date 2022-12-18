@@ -64,6 +64,7 @@ ln -s g++-12 g++
 
 # Toolchain
 
+See cross-compiler.md
 
 ## Build your own 
 Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
@@ -103,15 +104,15 @@ Example
 ### Architechtures
 Change target arch by using switches with make:
 ```
-arch=aarch64
-arch=x86
-arch=x86_64
+TARGET=aarch64
+TARGET=x86
+TARGET=x86_64
 ```
 
 Building for arm64:
 
 Example
-`make busybox arch=aarch64 JOBS=-j4`
+`make busybox TARGET=aarch64 JOBS=-j4`
 
 Defaults to x86
 
@@ -202,7 +203,7 @@ make binutils-install
 
 This target strips all debug symbols files matching LSB executable, shared object or ar archive 
 ```
-make arch=arm64 strip-fs
+make TARGET=aarch64 strip-fs
 ```
 # Booting
 Prerequisites:
@@ -211,8 +212,8 @@ Prerequisites:
 git clone https://github.com/snacsnoc/snacklinux-base.git
 cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
 
-#Create ./dev files
-./createdev.sh
+#Create /dev files and required directories
+./tools/create_dev.sh
 
 #fbpkg (package manager)
 git clone https://github.com/snacsnoc/fbpkg.git
@@ -247,7 +248,7 @@ Run a VNC server with qemu:
 
 ## x86:
 ```
-qemu-system-i386 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
+qemu-system-i386 -cpu 486-v1 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
 ```
 
 
