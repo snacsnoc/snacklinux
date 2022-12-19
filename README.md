@@ -19,7 +19,7 @@ Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and m
 
 The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
 
-SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM.
+SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM. The x86 bootable ISO is 7MB in size!
 
 
 
@@ -206,6 +206,9 @@ This target strips all debug symbols files matching LSB executable, shared objec
 ```
 make TARGET=aarch64 strip-fs
 ```
+
+#### additional packages
+See 
 # Booting
 Prerequisites:
 ```
@@ -299,3 +302,8 @@ Here are links to the software used in SnackLinux:
 [binutils](http://ftp.gnu.org/gnu/binutils/)
 
 [musl](http://www.musl-libc.org/)
+
+Resources
+----------
+http://port70.net/~nsz/32_dynlink.html
+https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
