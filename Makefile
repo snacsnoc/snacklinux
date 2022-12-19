@@ -38,7 +38,7 @@ iso:
 	@mkdir -p iso boot/isolinux
 	@cp ./configs/syslinux/isolinux.cfg boot/isolinux 
 	@cp ./configs/syslinux/menu.txt boot/isolinux 
-	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip -7 > $(PWD)/rootfs.gz 
+	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip -n -9 > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
