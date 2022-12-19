@@ -68,7 +68,7 @@ ifeq ($(TARGET), aarch64)
 else ifeq ($(TARGET), x86_64)
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-musl-linux- $(JOBS) bzImage
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) bzImage
 
 else ifeq ($(TARGET), i486)	
 	cp ./configs/linux/.config-x86 linux/.config
