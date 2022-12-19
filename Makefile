@@ -26,6 +26,7 @@ PWD=$(shell pwd)
 
 ROOTFS_PATH=/opt/snacklinux_rootfs
 
+
 .PHONY: all iso kernel docker musl busybox bash binutils syslinux
 
 all: iso
@@ -37,8 +38,9 @@ system: musl busybox bash
 iso: 
 	@mkdir -p iso boot/isolinux
 	@cp ./configs/syslinux/isolinux.cfg boot/isolinux 
-	@cp ./configs/syslinux/menu.txt boot/isolinux 
-	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz
+	@cp ./configs/syslinux/menu.txt boot/isolinux
+	# If we're making the ISO, we don't need to include the kernel in the root filesystem  
+	cd $(ROOTFS_PATH)/; find . -print | grep -v boot/bzImage | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
