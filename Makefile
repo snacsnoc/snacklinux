@@ -135,7 +135,7 @@ python:
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	./configure --build=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
-	$(MAKE) $(JOBS) BUILDARCH=$(TARGET) HOSTARCH=$(TARGET) CROSS_COMPILE_TARGET=yes; \
+	$(MAKE) $(JOBS) BUILDARCH=$(TARGET)-linux-musl- HOSTARCH=$(TARGET)-linux-musl- CROSS_COMPILE_TARGET=yes; \
 
 python-static:
 	cd python/ ; \
