@@ -44,3 +44,7 @@ ln -sf $BASH bash || exit 1
 wget https://www.kernel.org/pub/linux/utils/boot/syslinux/$SYSLINUX.tar.gz || exit 1
 tar xf $SYSLINUX.tar.gz || exit 1
 ln -sf $SYSLINUX syslinux || exit 1
+
+wget https://www.python.org/ftp/python/$PYTHON/$PYTHON.tar.xz
+tar xvf $PYTHON.tar.xz || exit 1
+ln -sf $PYTHON.tar.xz python || exit 1

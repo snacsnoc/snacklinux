@@ -27,11 +27,11 @@ PWD=$(shell pwd)
 ROOTFS_PATH=/opt/snacklinux_rootfs
 
 
-.PHONY: all iso kernel docker musl busybox bash binutils syslinux
+.PHONY: all iso kernel docker musl busybox bash binutils syslinux python
 
 all: iso
 
-install: musl-install busybox-install bash-install strip-fs
+install: musl-install busybox-install bash-install strip-fs  python-install
 	
 system: musl busybox bash	
 
@@ -56,10 +56,12 @@ clean:
 	rm -f boot/isolinux/linux*
 	rm -f docker	
 	# Clean package build dirs
-	cd linux && make clean
-	cd musl && make clean
-	cd busybox && make clean
-	cd bash && make distclean
+	@cd linux && make clean
+	@cd musl && make clean
+	@cd busybox && make clean
+	@cd bash && make distclean
+	@cd python && make distclean
+	echo "Clean ok"
 
 kernel: 
 ifeq ($(TARGET), aarch64)
@@ -110,7 +112,7 @@ endif
 
 bash:
 	cd bash/ ; \
-	CROSS_COMPILE=$(TARGET)-linux-musl- ; \
+	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(TARGET)-linux-musl --target=$(TARGET)-linux-musl --disable-nls 	; \
 	$(MAKE) $(JOBS) ; \
 
@@ -127,6 +129,31 @@ syslinux:
 	$(PATCH) -p1 -i 0014_fix_ftbfs_no_dynamic_linker.patch ; \
 	cd syslinux/ ; \
 	$(MAKE) $(JOBS) ; \
+
+python:
+	#LDFLAGS="-static -static-libgcc" CPPFLAGS="-static"
+	cd python/ ; \
+	CROSS_COMPILE=$(TARGET)-linux-musl-  \
+	./configure --build=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux ; \
+	CROSS_COMPILE=$(TARGET)-linux-musl- \
+	$(MAKE) $(JOBS) BUILDARCH=$(TARGET_HOST) HOSTARCH=$(TARGET_HOST) CROSS_COMPILE_TARGET=yes; \
+
+python-static:
+	cd python/ ; \
+	sed '1s/^/*static*\n/' Modules/Setup.dist > Modules/Setup ; \C
+	CROSS_COMPILE=$(TARGET)-linux-musl-  \
+	LDFLAGS="-static -static-libgcc" CPPFLAGS="-static" \
+	./configure --build=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux ; \
+	sed -i '/LINKFORSHARED=/c\LINKFORSHARED=' Makefile ; \
+	CROSS_COMPILE=$(TARGET)-linux-musl- \
+	$(MAKE) $(JOBS) ; \
+
+python-install:
+	#LDFLAGS="-static -static-libgcc" CPPFLAGS="-static"
+	cd python/ ; \
+	CROSS_COMPILE=$(TARGET)-linux-musl- \
+	$(MAKE) $(JOBS) install CROSS_COMPILE_TARGET=yes  prefix=$(ROOTFS_PATH); \
+
 
 kernel-install: kernel
 ifeq ($(TARGET), aarch64)

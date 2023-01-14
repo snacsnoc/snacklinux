@@ -193,6 +193,11 @@ make binutils
 make syslinux
 ```
 
+#### Python (experimental)
+
+```
+make python
+```
 
 If you would also like to install binutils, use:
 
