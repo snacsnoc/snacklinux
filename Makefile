@@ -150,6 +150,10 @@ python-static:
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
 	$(MAKE) $(JOBS) ; \
 
+openssl:
+	cd openssl/ ; \
+
+
 python-install:
 	#LDFLAGS="-static -static-libgcc" CPPFLAGS="-static"
 	cd python/ ; \
