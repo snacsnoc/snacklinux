@@ -133,16 +133,19 @@ syslinux:
 python:
 	cd python/ ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
-	./configure --build=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux ; \
+	CC=$(TARGET)-linux-musl-gcc \
+	./configure --build=$(TARGET)-linux-musl  --host=$(TARGET)-linux-musl ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
+	CC=$(TARGET)-linux-musl-gcc \
 	$(MAKE) $(JOBS) BUILDARCH=$(TARGET)-linux-musl- HOSTARCH=$(TARGET)-linux-musl- CROSS_COMPILE_TARGET=yes; \
 
 python-static:
 	cd python/ ; \
-	sed '1s/^/*static*\n/' Modules/Setup.dist > Modules/Setup ; \C
+	sed '1s/^/*static*\n/' Modules/Setup > Modules/Setup ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	LDFLAGS="-static -static-libgcc" CPPFLAGS="-static" \
-	./configure --build=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux ; \
+	CC=$(TARGET)-linux-musl-gcc \
+	./configure --host=$(TARGET)-linux-musl --build=$(TARGET)-linux-musl ; \
 	sed -i '/LINKFORSHARED=/c\LINKFORSHARED=' Makefile ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
 	$(MAKE) $(JOBS) ; \
