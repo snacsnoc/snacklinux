@@ -23,8 +23,8 @@ source defs.sh
 
 wget https://www.python.org/ftp/python/$PYTHON/$PYTHON.tar.xz
 tar xvf $PYTHON.tar.xz || exit 1
-ln -sf $PYTHON.tar.xz python || exit 1
+ln -sf $PYTHON python || exit 1
 
 wget https://www.openssl.org/source/$OPENSSL.tar.gz
 tar xvf $OPENSSL.tar.gz || exit 1
-ln -sf $OPENSSL.tar.gz openssl || exit 1
+ln -sf $OPENSSL openssl || exit 1
