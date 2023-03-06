@@ -14,7 +14,7 @@ SnackLinux
 
 :whale: (in-progress) Docker support 
 
-Visit [snacklinux.geekness.eu](snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
+Visit [snacklinux.geekness.eu](https://snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 
 
 The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
