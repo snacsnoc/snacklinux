@@ -25,7 +25,7 @@ SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initia
 
 
 Archtechtures supported:
-* arm64 (works)
+* arm64 (current, works) - Targeting Apple Silicon
 * i486 (updating)
 * amd64/x86_64 (old, but works with effort)
 
