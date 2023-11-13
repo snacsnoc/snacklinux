@@ -1,5 +1,7 @@
 SnackLinux
 ===========
+![alt text](http://snacklinux.geekness.eu/_media/ezgif.com-gif-maker_1_.gif)
+
 :computer: SnackLinux is an ultra minimal Linux distribution 
 
 :wrench: Utilizing a recent 6.x kernel with BusyBox, musl and Bash 
@@ -15,22 +17,23 @@ SnackLinux
 :whale: (in-progress) Docker support 
 
 Visit [snacklinux.geekness.eu](http://snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
+______
+SnackLinux runs a barebone kernel with downloadable extra kernel modules.
+
+The philosophy is to create a completely hackable Linux system using standard GNU utilities, controlled by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features. If you've ever wanted to build your own Linux distribution in 30 minutes, this is the project you're after.
+
+Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM. The x86 bootable ISO is 7MB in size!
 
 
-The philosophy is to create a completely hackable Linux system using standard GNU utilities, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
-
-SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM. The x86 bootable ISO is 7MB in size!
 
 
-
-
-Archtechtures supported:
+__Archtechtures supported:__
 * arm64 (current, works) - Targeting Apple Silicon
 * i486 (updating)
 * amd64/x86_64 (old, but works with effort)
 
 
-Building SnackLinux from source
+# Compiling SnackLinux from source
 -------------------------------
 
 
@@ -38,20 +41,20 @@ Building SnackLinux from source
 
 * Linux is preferable to build with
  
-**Debian**
+## Debian
 ```
 apt-get install build-essential git libgmp-dev libmpc-dev flex bison bc 
 ``` 
-Optional:
+_Optional:_
 ```
 apt-get install genisoimage #used for generating x86 ISO images
 ```
 
-**Mac OS***
+## Mac OS*
 * Mac OS is **incredibly** difficult to get working alone to build the kernel, otherwise cross-compiling packages works
 * An alternative to a tradtional VM is to use something like [krunvm](https://github.com/containers/krunvm)
 
-#### gcc
+### gcc
 ```
 arch -arm64 brew install gcc@12
 ```
@@ -93,10 +96,11 @@ Toolchain installs to `output/`
 
 Add the toolchain to your shell's PATH:
 ```
-export PATH=$PATH:/path/to/out/bin
+export PATH=$PATH:/path/musl-cross-make/output/bin
 ```
 
 # Building SnackLinux
+After our toolchain is built, we can build SnackLinux which includes the kernel and user utilities.
 
 ## Environment vars
 
@@ -109,22 +113,16 @@ Example:
 Path to SnackLinux root filesystem, defaults to `/opt/snacklinux_rootfs`
 
 ### Architechtures
-Change target arch by using switches with make:
 ```
 TARGET=aarch64
 TARGET=x86
 TARGET=x86_64
 ```
-
-Building for arm64:
-
-Example
-`export TARGET=aarch64 JOBS=-j4`
-
 Defaults to `x86`
 
+__Example, building for arm64:__
 
-
+`export TARGET=aarch64 JOBS=-j4`
 
 
 ## Versions
@@ -134,27 +132,23 @@ See `defs.sh` for defined kernel and package versions
 ## Getting started
 
 
-Download source tars and link
+* Download source tars and link
 
 `bash ./download_prereq.sh `
 
-Set the amount of parallel jobs to run when using make
-```
-export JOBS=-j16
-```
 
-Compile the kernel
+* Compile the kernel
 
 ```
 make kernel
 ```
 
-Build musl, Bash and BusyBox
+* Build musl, Bash and BusyBox
 ```
 make system
 ```
 
-Install to `/opt/snacklinux_rootfs` directory
+* Install to `/opt/snacklinux_rootfs` directory
 
 ```
 make install
@@ -164,7 +158,7 @@ Next step: [booting](#Booting)
 
 
 #### Compile individual packages
-
+You can alternatively build the individual software and install at your will.
 
 #### Linux 
 
@@ -237,6 +231,7 @@ cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
 ```
+# Booting 
 ## ISO
 
 Run `make iso`. The output ISO will be in `iso/`
@@ -256,7 +251,7 @@ Linux:
 qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard
 ```
 
-Mac OS (M1):
+Mac OS (Apple Silicon):
 ```
 qemu-system-aarch64 -M virt,highmem=off -kernel Image -initrd rootfs.gz -append "root=/dev/ram" -m 128  -boot menu=off -cpu max -nodefaults -boot d -bios "/opt/homebrew/Cellar/qemu/7.1.0/share/qemu/edk2-aarch64-code.fd" -device virtio-gpu-pci  -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard -accel hvf 
 ```
@@ -284,6 +279,9 @@ Edit anything in `/opt/snacklinux_rootfs`, it is the root filesystem.
 The kernel can also be recompiled to fit your needs. 
 
 The `boot/isolinux` directory is where ISOLINUX resides, edit the menu to adjust to your needs.
+
+# Contributing
+SnackLinux is a personal project, but I welcome contributions from the community. If you have ideas, feedback, or code changes that can improve SnackLinux, your input is valued.
 
 Thanks
 ------
