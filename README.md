@@ -17,7 +17,7 @@ SnackLinux
 Visit [snacklinux.geekness.eu](http://snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 
 
-The philosophy is to create a completely hackable Linux system, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
+The philosophy is to create a completely hackable Linux system using standard GNU utilities, controllable by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features.
 
 SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM. The x86 bootable ISO is 7MB in size!
 
@@ -25,7 +25,7 @@ SnackLinux runs a barebone kernel with downloadable extra kernel modules. Initia
 
 
 Archtechtures supported:
-* arm64
+* arm64 (works)
 * i486 (updating)
 * amd64/x86_64 (old, but works with effort)
 
@@ -65,7 +65,6 @@ ln -s g++-12 g++
 
 # Toolchain
 
-See cross-compiler.md
 
 ## Build your own 
 Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
@@ -90,17 +89,24 @@ TARGET=i486-linux-musl make install
 ### TODO:x86_64
 
 
-Installs to `output/` 
+Toolchain installs to `output/` 
+
 Add the toolchain to your shell's PATH:
-`export PATH=$PATH:/path/to/out/bin`
+```
+export PATH=$PATH:/path/to/out/bin
+```
 
 # Building SnackLinux
 
 ## Environment vars
 
-`JOBS` Set number of parallel jobs to create, defaults to -j8
-Example
-`make busybox JOBS=-j12`
+ `JOBS` 
+Set number of parallel jobs to create, defaults to -j8
+Example:
+`export JOBS=-j12`
+
+`ROOTFS_PATH`
+Path to SnackLinux root filesystem, defaults to `/opt/snacklinux_rootfs`
 
 ### Architechtures
 Change target arch by using switches with make:
@@ -113,16 +119,16 @@ TARGET=x86_64
 Building for arm64:
 
 Example
-`make busybox TARGET=aarch64 JOBS=-j4`
+`export TARGET=aarch64 JOBS=-j4`
 
-Defaults to x86
+Defaults to `x86`
 
 
 
 
 
 ## Versions
-See `defs.sh` for kernel and package versions
+See `defs.sh` for defined kernel and package versions
 
 
 ## Getting started
@@ -134,7 +140,7 @@ Download source tars and link
 
 Set the amount of parallel jobs to run when using make
 ```
-export JOBS=j16
+export JOBS=-j16
 ```
 
 Compile the kernel
@@ -160,23 +166,23 @@ Next step: [booting](#Booting)
 #### Compile individual packages
 
 
-#### Linux - 
+#### Linux 
 
 ```
 make kernel
 ```
 
-#### musl - 
+#### musl 
 ```
 make musl
 ```
-#### BusyBox - 
+#### BusyBox 
 
 ```
 make busybox
 ```
  
-#### Bash - 
+#### Bash 
 
 ```
 make bash
@@ -209,22 +215,25 @@ make binutils-install
 
 This target strips all debug symbols files matching LSB executable, shared object or ar archive 
 ```
-make TARGET=aarch64 strip-fs
+make strip-fs
 ```
 
 #### additional packages
 See 
 # Booting
 Prerequisites:
+
+#### Base files (/etc)
 ```
-#Base files (/etc)
 git clone https://github.com/snacsnoc/snacklinux-base.git
 cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
-
-#Create /dev files and required directories
+```
+### Create /dev files and required directories
+```
 ./tools/create_dev.sh
-
-#fbpkg (package manager)
+```
+### fbpkg (package manager)
+```
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
 ```
@@ -241,7 +250,7 @@ cd /opt/snacklinux_rootfs/; find . -print | cpio -o -H newc --quiet | gzip -6 > 
 ```
 Then boot in qemu:
 
-## arm64:
+### arm64:
 Linux:
 ```
 qemu-system-aarch64 -M virt,highmem=off -kernel linux/arch/arm64/boot/Image -initrd rootfs.gz -append "root=/dev/ram" -m 256 -serial stdio -boot menu=off -cpu max -nodefaults -boot d -device virtio-gpu-pci -device virtio-keyboard-pci,id=kbd0,serial=virtio-keyboard
@@ -255,24 +264,22 @@ qemu-system-aarch64 -M virt,highmem=off -kernel Image -initrd rootfs.gz -append 
 Run a VNC server with qemu:
 `-vnc 12.34.56.78:0`
 
-## x86:
+### x86:
 ```
 qemu-system-i386 -cpu 486-v1 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
 ```
 
 
-## x86_64:
+### x86_64:
 ```
 qemu-system-x86_64 -m 256 -kernel bzImage -initrd rootfs.gz -append "root=/dev/ram rdinit=/sbin/init"
 ```
 
-Packages
--------
-Read the [Packages page](http://snacklinux.org/packages) for building packages.
+# Packages
+Read the [Packages page](http://snacklinux.geekness.eu/packages) for building packages.
 For SnackLinux's package manager fbpkg, see [here](https://github.com/snacsnoc/fbpkg).
 
-Hacking
--------
+# Hacking
 Edit anything in `/opt/snacklinux_rootfs`, it is the root filesystem.
 The kernel can also be recompiled to fit your needs. 
 
@@ -308,7 +315,6 @@ Here are links to the software used in SnackLinux:
 
 [musl](http://www.musl-libc.org/)
 
-Resources
-----------
+# Resources
 http://port70.net/~nsz/32_dynlink.html
 https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
