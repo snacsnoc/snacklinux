@@ -27,11 +27,11 @@ PWD=$(shell pwd)
 ROOTFS_PATH=/opt/snacklinux_rootfs
 
 
-.PHONY: all iso kernel docker musl busybox bash binutils syslinux python
+.PHONY: all iso kernel docker musl busybox bash binutils syslinux python openssl
 
 all: iso
 
-install: musl-install busybox-install bash-install strip-fs  python-install
+install: musl-install busybox-install bash-install strip-fs python-install openssl-install
 	
 system: musl busybox bash	
 
@@ -134,7 +134,7 @@ python:
 	cd python/ ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	CC=$(TARGET)-linux-musl-gcc \
-	./configure --build=$(TARGET)-linux-musl  --host=$(TARGET)-linux-musl ; \
+	./configure --build=$(TARGET)-linux-musl  --host=$(TARGET)-linux-musl --with-openssl=$(ROOTFS_PATH) ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
 	CC=$(TARGET)-linux-musl-gcc \
 	$(MAKE) $(JOBS) BUILDARCH=$(TARGET)-linux-musl- HOSTARCH=$(TARGET)-linux-musl- CROSS_COMPILE_TARGET=yes; \
@@ -145,14 +145,28 @@ python-static:
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	LDFLAGS="-static -static-libgcc" CPPFLAGS="-static" \
 	CC=$(TARGET)-linux-musl-gcc \
-	./configure --host=$(TARGET)-linux-musl --build=$(TARGET)-linux-musl ; \
+	./configure --host=$(TARGET)-linux-musl --build=$(TARGET)-linux-musl --with-openssl-rpath=auto ; \
 	sed -i '/LINKFORSHARED=/c\LINKFORSHARED=' Makefile ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
 	$(MAKE) $(JOBS) ; \
 
 openssl:
+ifeq ($(TARGET), aarch64)
+	./Configure --prefix=$(ROOTFS_PATH)/usr/ shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-aarch64 
+else ifeq ($(TARGET), x86_64)
+	./Configure --prefix=$(ROOTFS_PATH)/usr/ shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-x86_64 
+else ifeq ($(TARGET), i486)	
 	cd openssl/ ; \
+	CC=$(TARGET)-linux-musl-gcc \
+	./Configure --prefix=$(ROOTFS_PATH)/usr/ shared linux-elf ; \
+	make $(JOBS) ; \
+	
+endif
 
+
+openssl-install:
+	cd openssl/ ; \
+	make install ; \
 
 python-install:
 	#LDFLAGS="-static -static-libgcc" CPPFLAGS="-static"
