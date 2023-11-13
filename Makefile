@@ -58,7 +58,7 @@ docker:
 clean:
 	rm -rf iso
 	rm -f boot/isolinux/linux*
-	rm -f docker	
+	rm -rf docker	
 	# Clean package build dirs
 	@cd linux && make clean
 	@cd musl && make clean
