@@ -24,7 +24,11 @@ GIT_URL=https://github.com/snacsnoc/snacklinux.git
 
 PWD=$(shell pwd)
 
-ROOTFS_PATH=/opt/snacklinux_rootfs
+# Set root install path
+ifndef ROOTFS_PATH
+	ROOTFS_PATH=/opt/snacklinux_rootfs
+endif
+
 
 
 .PHONY: all iso kernel docker musl busybox bash binutils syslinux python openssl
