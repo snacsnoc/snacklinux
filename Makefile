@@ -43,6 +43,8 @@ iso:
 	@mkdir -p iso boot/isolinux
 	@cp ./configs/syslinux/isolinux.cfg boot/isolinux 
 	@cp ./configs/syslinux/menu.txt boot/isolinux
+	@cp ./syslinux/bios/core/isolinux.bin boot/isolinux
+	@cp ./syslinux/bios/com32/elflink/ldlinux/ldlinux.c32 boot/isolinux
 	# If we're making the ISO, we don't need to include the kernel in the root filesystem  
 	cd $(ROOTFS_PATH)/; find . -print | grep -v boot/bzImage | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
 	wait
@@ -185,6 +187,7 @@ ifeq ($(TARGET), aarch64)
 	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
 	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot/Image 
 else ifeq ($(TARGET), i486)	
+	@mkdir -p iso boot/isolinux
 	cd linux/	; \
 	cp arch/x86/boot/bzImage ../boot/isolinux ; \
 	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot/bzImage 

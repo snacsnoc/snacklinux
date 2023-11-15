@@ -232,7 +232,7 @@ git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
 ```
 # Booting 
-## ISO
+## ISO (x86)
 
 Run `make iso`. The output ISO will be in `iso/`
 
