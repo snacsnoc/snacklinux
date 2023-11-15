@@ -35,7 +35,7 @@ endif
 
 all: iso
 
-install: musl-install busybox-install bash-install strip-fs python-install openssl-install
+install: musl-install busybox-install bash-install strip-fs 
 	
 system: musl busybox bash	
 
