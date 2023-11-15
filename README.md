@@ -115,10 +115,10 @@ Path to SnackLinux root filesystem, defaults to `/opt/snacklinux_rootfs`
 ### Architechtures
 ```
 TARGET=aarch64
-TARGET=x86
+TARGET=i386
 TARGET=x86_64
 ```
-Defaults to `x86`
+Defaults to `i486`
 
 __Example, building for arm64:__
 
