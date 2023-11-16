@@ -56,3 +56,5 @@ mkdir -v /opt/snacklinux_rootfs/tmp
 
 
 mkdir -v /opt/snacklinux_rootfs/sys
+
+mkdir -vp /opt/snacklinux_rootfs/var/log

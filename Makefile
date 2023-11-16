@@ -187,7 +187,8 @@ ifeq ($(TARGET), aarch64)
 	@cp ./arch/arm64/boot/Image ../boot/isolinux ; \
 	@cp ./arch/arm64/boot/Image $(ROOTFS_PATH)/boot/Image 
 else ifeq ($(TARGET), i486)	
-	@mkdir -p iso boot/isolinux
+	@mkdir -p boot/isolinux
+	@mkdir -p $(ROOTFS_PATH)/boot
 	cd linux/	; \
 	cp arch/x86/boot/bzImage ../boot/isolinux ; \
 	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot/bzImage 
