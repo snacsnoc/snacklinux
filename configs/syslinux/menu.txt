@@ -8,4 +8,4 @@ Choose an option
  SnackLinux - snacklinux.geekness.eu
  (easton@geekness.eu)
 
- Kernel 6.0.12 (Dec 19 2022)
+ Kernel 6.6.1 (Nov 14 2023)
