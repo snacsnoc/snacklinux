@@ -39,18 +39,28 @@ install: kernel-install musl-install busybox-install bash-install strip-fs
 	
 system: musl busybox bash	
 
-iso: 
+# Define a common target for shared steps
+common_iso_steps:
 	@mkdir -p iso boot/isolinux
 	@cp ./configs/syslinux/isolinux.cfg boot/isolinux 
 	@cp ./configs/syslinux/menu.txt boot/isolinux
 	@cp ./syslinux/bios/core/isolinux.bin boot/isolinux
 	@cp ./syslinux/bios/com32/elflink/ldlinux/ldlinux.c32 boot/isolinux
-	# If we're making the ISO, we don't need to include the kernel in the root filesystem  
+
+iso: common_iso_steps
+	# If we're making the ISO, we don't need to include the kernel in the root filesystem
 	cd $(ROOTFS_PATH)/; find . -print | grep -v boot/bzImage | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
-	
+
+iso-with-kernel: common_iso_steps
+	# If we're making the ISO with kernel, include the kernel in the root filesystem
+	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
+	wait
+	mv rootfs.gz boot/isolinux
+	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
+
 docker:
 	mkdir -p docker/
 	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C $(ROOTFS_PATH)/ .
@@ -101,11 +111,11 @@ else ifeq ($(TARGET), i486)
 	CC=$(TARGET)-linux-musl-gcc ./configure --prefix=/ ; \
 	$(MAKE) $(JOBS) 
 endif
+
 busybox:
 ifeq ($(TARGET), aarch64)
 	@cp ./configs/busybox/.config-arm64 busybox/.config
 else ifeq ($(TARGET), x86_64)
-
 	@cp ./configs/busybox/.config-x86_64 busybox/.config ; \
 	@cp ./patches/busybox/ifplugd.patch busybox/ ; \
 	cd busybox/	; \
@@ -208,6 +218,7 @@ busybox-install: busybox
 bash-install: bash		
 	cd bash/ ; \
 	$(MAKE) DESTDIR=$(ROOTFS_PATH) install
+	rm $(ROOTFS_PATH)/bin/bashbug
 
 binutils-install: binutils
 	cd binutils/ ; \
@@ -223,4 +234,3 @@ strip-fs:
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "LSB executable"     | cut -f 1 -d : | xargs $(STRIP) --strip-all      2>/dev/null || true
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "shared object"      | cut -f 1 -d : | xargs $(STRIP) --strip-unneeded 2>/dev/null || true
 	find $(ROOTFS_PATH) -type f | xargs file 2>/dev/null | grep "current ar archive" | cut -f 1 -d : | xargs $(STRIP) --strip-debug	   2>/dev/null || true
-	#@$(STRIP) $(ROOTFS_PATH)/bin/bash 
