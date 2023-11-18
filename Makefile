@@ -14,7 +14,7 @@ endif
 
 
 ifndef JOBS
-	JOBS=-j8
+	JOBS=8
 endif
 
 CDIMAGE=snacklinux_$(TARGET)
@@ -48,7 +48,7 @@ common_iso_steps:
 	@cp ./syslinux/bios/com32/elflink/ldlinux/ldlinux.c32 boot/isolinux
 
 iso: common_iso_steps
-	# If we're making the ISO, we don't need to include the kernel in the root filesystem
+	# Don't include the kernel in the root filesystem
 	cd $(ROOTFS_PATH)/; find . -print | grep -v boot/bzImage | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
@@ -59,7 +59,7 @@ iso-with-kernel: common_iso_steps
 	cd $(ROOTFS_PATH)/; find . -print | cpio -o -H newc --quiet | gzip > $(PWD)/rootfs.gz 
 	wait
 	mv rootfs.gz boot/isolinux
-	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW).iso boot
+	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW)-inc-kernel.iso boot
 
 docker:
 	mkdir -p docker/
@@ -83,17 +83,17 @@ kernel:
 ifeq ($(TARGET), aarch64)
 	cp ./configs/linux/.config-arm64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) Image 
+	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) Image 
 
 else ifeq ($(TARGET), x86_64)
 	cp ./configs/linux/.config-x86_64 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) bzImage
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 
 else ifeq ($(TARGET), i486)	
 	cp ./configs/linux/.config-x86 linux/.config
 	cd linux/	; \
-	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- $(JOBS) bzImage
+	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 endif
 	
 # Build musl
@@ -105,11 +105,11 @@ musl:
 ifeq ($(TARGET), aarch64)
 	cd musl/ ; \
 	CC=$(TARGET)-linux-musl-gcc ./configure --prefix=/ ; \
-	$(MAKE) $(JOBS) 
+	$(MAKE) -j$(JOBS) 
 else ifeq ($(TARGET), i486)
 	cd musl/ ; \
 	CC=$(TARGET)-linux-musl-gcc ./configure --prefix=/ ; \
-	$(MAKE) $(JOBS) 
+	$(MAKE) -j$(JOBS) 
 endif
 
 busybox:
@@ -124,27 +124,27 @@ else ifeq ($(TARGET), i486)
 	@cp ./configs/busybox/.config-x86 busybox/.config
 endif	
 	cd busybox/	; \
-	$(MAKE) $(JOBS) ; \
+	$(MAKE) -j$(JOBS) ; \
 
 bash:
 	cd bash/ ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl-  \
 	./configure --enable-largefile --prefix=/ --without-bash-malloc --enable-net-redirections --host=$(TARGET)-linux-musl --target=$(TARGET)-linux-musl --disable-nls 	; \
-	$(MAKE) $(JOBS) ; \
+	$(MAKE) -j$(JOBS) ; \
 
 binutils:
 	cd binutils/ ; \
 	LDFLAGS="-Wl,-static"  \
 	CFLAGS="-D_GNU_SOURCE -D_LARGEFILE64_SOURCE -static -s"  \
 	./configure --target=$(TARGET)-musl-linux  --host=$(TARGET)-musl-linux --disable-shared --disable-multilib --disable-nls  --prefix=/usr --with-sysroot=/	; \
-	$(MAKE) $(JOBS) ; \
+	$(MAKE) -j$(JOBS) ; \
 
 syslinux:
 	# Check if this is still needed (probably not)
 	@cp ./patches/syslinux/0014_fix_ftbfs_no_dynamic_linker.patch syslinux/
 	$(PATCH) -p1 -i 0014_fix_ftbfs_no_dynamic_linker.patch ; \
 	cd syslinux/ ; \
-	$(MAKE) $(JOBS) ; \
+	$(MAKE) -j$(JOBS) ; \
 
 python:
 	cd python/ ; \
@@ -153,7 +153,7 @@ python:
 	./configure --build=$(TARGET)-linux-musl  --host=$(TARGET)-linux-musl --with-openssl=$(ROOTFS_PATH) ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
 	CC=$(TARGET)-linux-musl-gcc \
-	$(MAKE) $(JOBS) BUILDARCH=$(TARGET)-linux-musl- HOSTARCH=$(TARGET)-linux-musl- CROSS_COMPILE_TARGET=yes; \
+	$(MAKE) -j$(JOBS) BUILDARCH=$(TARGET)-linux-musl- HOSTARCH=$(TARGET)-linux-musl- CROSS_COMPILE_TARGET=yes; \
 
 python-static:
 	cd python/ ; \
@@ -164,7 +164,7 @@ python-static:
 	./configure --host=$(TARGET)-linux-musl --build=$(TARGET)-linux-musl --with-openssl-rpath=auto ; \
 	sed -i '/LINKFORSHARED=/c\LINKFORSHARED=' Makefile ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
-	$(MAKE) $(JOBS) ; \
+	$(MAKE) -j$(JOBS) ; \
 
 openssl:
 ifeq ($(TARGET), aarch64)
@@ -175,7 +175,7 @@ else ifeq ($(TARGET), i486)
 	cd openssl/ ; \
 	CC=$(TARGET)-linux-musl-gcc \
 	./Configure --prefix=$(ROOTFS_PATH)/usr/ shared linux-elf ; \
-	make $(JOBS) ; \
+	make -j$(JOBS) ; \
 	
 endif
 
@@ -188,7 +188,7 @@ python-install:
 	#LDFLAGS="-static -static-libgcc" CPPFLAGS="-static"
 	cd python/ ; \
 	CROSS_COMPILE=$(TARGET)-linux-musl- \
-	$(MAKE) $(JOBS) install CROSS_COMPILE_TARGET=yes  prefix=$(ROOTFS_PATH); \
+	$(MAKE) -j$(JOBS) install CROSS_COMPILE_TARGET=yes  prefix=$(ROOTFS_PATH); \
 
 
 kernel-install: kernel

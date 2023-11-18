@@ -105,9 +105,9 @@ After our toolchain is built, we can build SnackLinux which includes the kernel 
 ## Environment vars
 
  `JOBS` 
-Set number of parallel jobs to create, defaults to -j8
+Set number of parallel jobs to create, defaults to 8
 Example:
-`export JOBS=-j12`
+`export JOBS=12`
 
 `ROOTFS_PATH`
 Path to SnackLinux root filesystem, defaults to `/opt/snacklinux_rootfs`
@@ -122,7 +122,7 @@ Defaults to `i486`
 
 __Example, building for arm64:__
 
-`export TARGET=aarch64 JOBS=-j4`
+`export TARGET=aarch64 JOBS=4`
 
 
 ## Versions
@@ -136,6 +136,8 @@ See `defs.sh` for defined kernel and package versions
 
 `bash ./download_prereq.sh `
 
+* Create target install directory
+`mkdir /opt/snacklinux_rootfs`
 
 * Compile the kernel
 
@@ -223,8 +225,9 @@ git clone https://github.com/snacsnoc/snacklinux-base.git
 cp -R snacklinux-base/rootfs/* /opt/snacklinux_rootfs/
 ```
 ### Create /dev files and required directories
+Run as root:
 ```
-./tools/create_dev.sh
+bash ./tools/create_dev.sh
 ```
 ### fbpkg (package manager)
 ```
@@ -234,7 +237,10 @@ cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
 # Booting 
 ## ISO (x86)
 
-Run `make iso`. The output ISO will be in `iso/`
+Run `make iso` to generate a bootable ISO. The output ISO will be in `iso/`
+
+Run `make iso-with-kernel` to generate a bootable ISO with the kernel in `/boot`. The output ISO will be in `iso/`
+
 
 Note: you do not have to have the toolchain to create the ISO
 
