@@ -1,4 +1,4 @@
-SnackLinux
+![logo](http://snacklinux.geekness.eu/_media/logo-smaller.png)SnackLinux
 ===========
 ![alt text](http://snacklinux.geekness.eu/_media/ezgif.com-gif-maker_1_.gif)
 
@@ -18,6 +18,8 @@ SnackLinux
 
 Visit [snacklinux.geekness.eu](http://snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 ______
+# Intro
+-------------------------------
 SnackLinux runs a barebone kernel with downloadable extra kernel modules.
 
 The philosophy is to create a completely hackable Linux system using standard GNU utilities, controlled by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features. If you've ever wanted to build your own Linux distribution in 30 minutes, this is the project you're after.
@@ -32,6 +34,11 @@ __Archtechtures supported:__
 * i486 (current, works)
 * amd64/x86_64 (old, but works with effort)
 
+
+# Getting started
+-------------------------------
+You can use prebuilt ISOs or compile from source.
+See [Getting started](http://snacklinux.geekness.eu/getting-started) to download ISOs and a quick start guide.
 
 # Compiling SnackLinux from source
 -------------------------------
