@@ -218,7 +218,7 @@ busybox-install: busybox
 bash-install: bash		
 	cd bash/ ; \
 	$(MAKE) DESTDIR=$(ROOTFS_PATH) install
-	rm $(ROOTFS_PATH)/bin/bashbug
+	rm -f $(ROOTFS_PATH)/bin/bashbug
 
 binutils-install: binutils
 	cd binutils/ ; \
