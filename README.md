@@ -28,8 +28,8 @@ Initially the project was created to run on old 486 CPUs with the latest softwar
 
 
 __Archtechtures supported:__
-* arm64 (current, works) - Targeting Apple Silicon
-* i486 (updating)
+* arm64 (current, works) 
+* i486 (current, works)
 * amd64/x86_64 (old, but works with effort)
 
 

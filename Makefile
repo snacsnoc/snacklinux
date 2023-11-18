@@ -95,7 +95,24 @@ else ifeq ($(TARGET), i486)
 	cd linux/	; \
 	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 endif
-	
+
+kernel-modules:
+ifeq ($(TARGET), aarch64)
+    cp ./configs/linux/.config-arm64 linux/.config
+    cd linux/ ; \
+    $(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
+
+else ifeq ($(TARGET), x86_64)
+    cp ./configs/linux/.config-x86_64 linux/.config
+    cd linux/ ; \
+    $(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
+
+else ifeq ($(TARGET), i486)
+    cp ./configs/linux/.config-x86 linux/.config
+    cd linux/ ; \
+    $(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
+endif
+
 # Build musl
 #
 # Upstream documentation: https://musl.libc.org/doc/1.1.24/manual.html under "Build Options"
@@ -202,6 +219,20 @@ else ifeq ($(TARGET), i486)
 	cd linux/	; \
 	cp arch/x86/boot/bzImage ../boot/isolinux ; \
 	cp arch/x86/boot/bzImage $(ROOTFS_PATH)/boot/bzImage 
+endif
+
+kernel-modules-install: kernel-modules
+ifeq ($(TARGET), aarch64)
+    cd linux/ ; \
+    $(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- INSTALL_MOD_PATH=$(ROOTFS_PATH) modules_install
+
+else ifeq ($(TARGET), x86_64)
+    cd linux/ ; \
+    $(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- INSTALL_MOD_PATH=$(ROOTFS_PATH) modules_install
+
+else ifeq ($(TARGET), i486)
+    cd linux/ ; \
+    $(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- INSTALL_MOD_PATH=$(ROOTFS_PATH) modules_install
 endif
 
 musl-install: musl
