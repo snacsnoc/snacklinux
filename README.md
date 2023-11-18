@@ -215,7 +215,7 @@ make strip-fs
 ```
 
 #### additional packages
-See 
+See [building packages](http://snacklinux.geekness.eu/packages)
 # Booting
 Prerequisites:
 
