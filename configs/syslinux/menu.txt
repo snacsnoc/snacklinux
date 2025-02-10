@@ -4,8 +4,9 @@ Choose an option
    2) 800x600 x 16bit
    3) 1024x768 x 16bit
    4) Set own resolution
+   5) No ACPI & no APIC
  
  SnackLinux - snacklinux.geekness.eu
  (easton@geekness.eu)
 
- Kernel 6.6.1 (Nov 14 2023)
+ Kernel 4.4.302 (Feb 10 2025)
