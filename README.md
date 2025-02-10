@@ -2,19 +2,17 @@
 ===========
 ![alt text](http://snacklinux.geekness.eu/_media/ezgif.com-gif-maker_1_.gif)
 
-:computer: SnackLinux is an ultra minimal Linux distribution 
+:computer: SnackLinux is an ultra minimal Linux distribution for 486 CPUs
 
-:wrench: Utilizing a recent 6.x kernel with BusyBox, musl and Bash 
+:wrench: Linux 4.4 kernel with BusyBox, musl, and Bash
 
-:small_orange_diamond: Built from scratch with a footprint of less than 20MB 
+:small_orange_diamond: Built from scratch with that can run with 8MB RAM
 
 :file_folder:	Bash-based package manager [fbpkg](https://github.com/snacsnoc/fbpkg)
 
 :package: x86 has 31 packages, including a working gcc toolchain and other GNU utilities 
 
-:battery: arm64 support
 
-:whale: (in-progress) Docker support 
 
 Visit [snacklinux.geekness.eu](http://snacklinux.geekness.eu) for downloads, wiki and more information about SnackLinux.
 ______
@@ -24,20 +22,20 @@ SnackLinux runs a barebone kernel with downloadable extra kernel modules.
 
 The philosophy is to create a completely hackable Linux system using standard GNU utilities, controlled by makefiles. The system installs to a local directory, anything in there is included in the final build. Imagine [Linux From Scratch](https://www.linuxfromscratch.org/) but with a lot less features. If you've ever wanted to build your own Linux distribution in 30 minutes, this is the project you're after.
 
-Initially the project was created to run on old 486 CPUs with the latest software, so SnackLinux is optimized for size and low RAM. The x86 bootable ISO is 7MB in size!
+Originally designed to bring the latest software to vintage i486 systems, SnackLinux is built for minimal size and low RAM usage. You can use virtualization or real hardware. The x86 bootable ISO is under 5MB.
 
 
 
 
 __Archtechtures supported:__
-* arm64 (current, works) 
-* i486 (current, works)
-* amd64/x86_64 (old, but works with effort)
+* x86/i486 (current, works)
+* arm64 (not maintained, works) See [Fluxflop](https://github.com/snacsnoc/fluxflop)
+* amd64/x86_64 (not maintained, but works with effort)
 
 
 # Getting started
 -------------------------------
-You can use prebuilt ISOs or compile from source.
+You can use prebuilt ISOs, a flashable disk image for use with Compact Flash or compile from source.
 See [Getting started](http://snacklinux.geekness.eu/getting-started) to download ISOs and a quick start guide.
 
 # Compiling SnackLinux from source
@@ -76,17 +74,11 @@ ln -s g++-12 g++
 # Toolchain
 
 
-## Build your own 
+## Build your own
 Compile your own toolchain with [musl-cross-make](https://github.com/richfelker/musl-cross-make.git)
 
 `git clone https://github.com/richfelker/musl-cross-make.git`
 
-### arm64
-
-```
-TARGET=aarch64-linux-musl make
-TARGET=aarch64-linux-musl make install
-```
 
 ### x86
 
@@ -95,8 +87,14 @@ TARGET=i486-linux-musl make
 TARGET=i486-linux-musl make install
 ```
 
+#### arm64
 
-### TODO:x86_64
+```
+TARGET=aarch64-linux-musl make
+TARGET=aarch64-linux-musl make install
+```
+
+
 
 
 Toolchain installs to `output/` 
@@ -147,7 +145,7 @@ See `defs.sh` for defined kernel and package versions
 `mkdir /opt/snacklinux_rootfs`
 
 * Compile the kernel
-
+_See `configs/linux` for available configs_
 ```
 make kernel
 ```
@@ -169,23 +167,23 @@ Next step: [booting](#Booting)
 #### Compile individual packages
 You can alternatively build the individual software and install at your will.
 
-#### Linux 
+#### Linux
 
 ```
 make kernel
 ```
 
-#### musl 
+#### musl
 ```
 make musl
 ```
-#### BusyBox 
+#### BusyBox
 
 ```
 make busybox
 ```
  
-#### Bash 
+#### Bash
 
 ```
 make bash
@@ -240,6 +238,7 @@ bash ./tools/create_dev.sh
 ```
 git clone https://github.com/snacsnoc/fbpkg.git
 cp fbpkg/src/fbpkg /opt/snacklinux_rootfs/usr/bin
+chmod +x /opt/snacklinux_rootfs/usr/bin
 ```
 # Booting 
 ## ISO (x86)
@@ -250,6 +249,57 @@ Run `make iso-with-kernel` to generate a bootable ISO with the kernel in `/boot`
 
 
 Note: you do not have to have the toolchain to create the ISO
+
+## Flashable boot disk
+You can generate a disk image suitable for flashing onto a Compact Flash card (using an IDE adapter) for deployment on real hardware.
+
+Create an image of your preferred size:
+```
+dd if=/dev/zero of=snacklinux.img bs=1M count=450
+```
+
+Mount it and create a partition:
+```
+sudo losetup -Pf snacklinux.img
+
+mkdir -p /mnt/snacklinux
+
+sudo mount /dev/loop0p1 /mnt/snacklinux
+
+echo -e "o\nn\np\n1\n\n\nw" | sudo fdisk /dev/loop0 
+sudo mkfs.ext2 /dev/loop0p1
+```
+Copy the root filesystem and install Syslinux bootloader:
+```
+cp -a /opt/snacklinux_rootfs/* /mnt/snacklinux/
+sudo mkdir -p /mnt/boot/extlinux
+# Copy the compressed kernel image if your rootfs does not include it
+cp linux/arch/x86/boot/bzImage /mnt/boot/extlinux
+
+cat << EOF > /boot/extlinux/extlinux.conf
+DEFAULT linux
+LABEL linux
+  KERNEL bzImage
+  APPEND root=/dev/hda1 rw noapic noacpi
+EOF
+
+# syslinux 6.03/6.04 is not reliable on old hardware, please use 4.07 and compile source
+sudo extlinux --install /mnt/boot/extlinux 
+```
+Install Syslinux MBR to the disk image:
+```
+sudo dd if=/usr/lib/EXTLINUX/mbr.bin of=/dev/loop0 bs=440 count=1
+```
+Finally unmount and detach:
+```
+sync
+
+sudo umount /mnt
+
+sudo losetup -d /dev/loop0
+```
+
+
 
 ## qemu
 Create a gzipped rootfs by running:
