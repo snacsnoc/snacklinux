@@ -26,6 +26,7 @@ mknod -m 666 ${ROOTFS_PATH}/dev/ptmx c 5 2
 
 # Only create two hard drive devs, more can be added
 mknod -m 644 ${ROOTFS_PATH}/dev/hda b 3 0
+mknod -m 644 ${ROOTFS_PATH}/dev/hda1 b 3 1
 mknod -m 644 ${ROOTFS_PATH}/dev/hdb b 3 64
 # Virt drives
 mknod -m 644 ${ROOTFS_PATH}/dev/vda b 252 0
