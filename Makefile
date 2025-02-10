@@ -61,16 +61,11 @@ iso-with-kernel: common_iso_steps
 	mv rootfs.gz boot/isolinux
 	$(GENISOIMAGE) -l -J -R -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat  -no-emul-boot -boot-load-size 4 -boot-info-table -o iso/$(CDIMAGE)_$(NOW)-inc-kernel.iso boot
 
-docker:
-	mkdir -p docker/
-	tar --numeric-owner --xattrs --acls -cvf snacklinux-$(NOW)-docker.tar -C $(ROOTFS_PATH)/ .
-	mv snacklinux-$(NOW)-docker.tar docker/
 
 # Delete build files
 clean:
 	rm -rf iso
 	rm -f boot/isolinux/linux*
-	rm -rf docker	
 	# Clean package build dirs
 	@cd linux && make clean
 	@cd musl && make clean
@@ -81,34 +76,34 @@ clean:
 
 kernel: 
 ifeq ($(TARGET), aarch64)
-	cp ./configs/linux/.config-arm64 linux/.config
+	cp ./configs/linux/6.x/.config-arm64 linux/.config
 	cd linux/	; \
 	$(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) Image 
 
 else ifeq ($(TARGET), x86_64)
-	cp ./configs/linux/.config-x86_64 linux/.config
+	cp ./configs/linux/6.x/.config-x86_64 linux/.config
 	cd linux/	; \
 	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 
 else ifeq ($(TARGET), i486)	
-	cp ./configs/linux/.config-x86 linux/.config
+	cp ./configs/linux/4.x/.config-i486 linux/.config
 	cd linux/	; \
 	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 endif
 
 kernel-modules:
 ifeq ($(TARGET), aarch64)
-    cp ./configs/linux/.config-arm64 linux/.config
+    cp ./configs/linux/6.x/.config-arm64 linux/.config
     cd linux/ ; \
     $(MAKE) ARCH=arm64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
 
 else ifeq ($(TARGET), x86_64)
-    cp ./configs/linux/.config-x86_64 linux/.config
+    cp ./configs/linux/6.x/.config-x86_64 linux/.config
     cd linux/ ; \
     $(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
 
 else ifeq ($(TARGET), i486)
-    cp ./configs/linux/.config-x86 linux/.config
+    cp ./configs/linux/4.x/.config-i486 linux/.config
     cd linux/ ; \
     $(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) modules
 endif
