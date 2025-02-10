@@ -21,7 +21,7 @@
 
 source defs.sh
 
-wget http://kernel.org/pub/linux/kernel/v6.x/$LINUX.tar.xz || exit 1
+wget http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz || exit 1
 tar xf $LINUX.tar.xz || exit 1
 ln -sf $LINUX linux || exit 1
 
