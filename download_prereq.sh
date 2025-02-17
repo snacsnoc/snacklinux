@@ -21,26 +21,44 @@
 
 source defs.sh
 
-wget http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz || exit 1
-tar xf $LINUX.tar.xz || exit 1
-ln -sf $LINUX linux || exit 1
+download_and_extract() {
+    local url=$1
+    local file=$2
+    local extract_cmd=$3
+    local link_name=$4
 
-wget http://www.musl-libc.org/releases/$MUSL.tar.gz || exit 1
-tar xf $MUSL.tar.gz || exit 1
-ln -sf $MUSL musl || exit 1
+    if [[ ! -f $file ]]; then
+        echo "Downloading $file..."
+        wget "$url" -O "$file" || exit 1
+    else
+        echo "$file already exists, skipping download."
+    fi
 
-wget http://ftp.gnu.org/gnu/binutils/$BINUTILS.tar.bz2 || exit 1
-tar xjf $BINUTILS.tar.bz2 || exit 1
-ln -sf $BINUTILS binutils || exit 1
+    # Extract and create symlink
+    if [[ ! -d ${file%.*} ]]; then
+        echo "Extracting $file..."
+        $extract_cmd "$file" || exit 1
+    else
+        echo "$file already extracted, skipping."
+    fi
 
-wget http://www.busybox.net/downloads/$BUSYBOX.tar.bz2 || exit 1
-tar xjf $BUSYBOX.tar.bz2 || exit 1
-ln -sf $BUSYBOX busybox || exit 1
+    ln -sf ${file%.*} "$link_name" || exit 1
+}
 
-wget https://ftp.gnu.org/gnu/bash/$BASH.tar.gz || exit 1
-tar xf $BASH.tar.gz || exit 1
-ln -sf $BASH bash || exit 1
+download_and_extract "http://kernel.org/pub/linux/kernel/v4.x/$LINUX.tar.xz" \
+                     "$LINUX.tar.xz" "tar xf" "linux"
 
-wget https://www.kernel.org/pub/linux/utils/boot/syslinux/$SYSLINUX.tar.gz || exit 1
-tar xf $SYSLINUX.tar.gz || exit 1
-ln -sf $SYSLINUX syslinux || exit 1
+download_and_extract "http://www.musl-libc.org/releases/$MUSL.tar.gz" \
+                     "$MUSL.tar.gz" "tar xf" "musl"
+
+download_and_extract "http://ftp.gnu.org/gnu/binutils/$BINUTILS.tar.bz2" \
+                     "$BINUTILS.tar.bz2" "tar xjf" "binutils"
+
+download_and_extract "http://www.busybox.net/downloads/$BUSYBOX.tar.bz2" \
+                     "$BUSYBOX.tar.bz2" "tar xjf" "busybox"
+
+download_and_extract "https://ftp.gnu.org/gnu/bash/$BASH.tar.gz" \
+                     "$BASH.tar.gz" "tar xf" "bash"
+
+download_and_extract "https://www.kernel.org/pub/linux/utils/boot/syslinux/$SYSLINUX.tar.gz" \
+                     "$SYSLINUX.tar.gz" "tar xf" "syslinux"
