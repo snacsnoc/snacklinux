@@ -9,4 +9,4 @@ Choose an option
  SnackLinux - snacklinux.geekness.eu
  (easton@geekness.eu)
 
- Kernel 4.4.302 (Feb 10 2025)
+ Kernel 4.4.302-2 (Feb 17 2025)
