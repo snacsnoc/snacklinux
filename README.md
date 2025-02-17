@@ -264,10 +264,10 @@ sudo losetup -Pf snacklinux.img
 
 mkdir -p /mnt/snacklinux
 
-sudo mount /dev/loop0p1 /mnt/snacklinux
-
 echo -e "o\nn\np\n1\n\n\nw" | sudo fdisk /dev/loop0 
 sudo mkfs.ext2 /dev/loop0p1
+
+sudo mount /dev/loop0p1 /mnt/snacklinux
 ```
 Copy the root filesystem and install Syslinux bootloader:
 ```
@@ -290,8 +290,10 @@ Install Syslinux MBR to the disk image:
 ```
 sudo dd if=/usr/lib/EXTLINUX/mbr.bin of=/dev/loop0 bs=440 count=1
 ```
-Finally unmount and detach:
+Finally make it bootable, unmount and detach:
 ```
+echo -e "a\nw" | fdisk snacklinux.img
+
 sync
 
 sudo umount /mnt
