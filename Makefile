@@ -67,11 +67,10 @@ clean:
 	rm -rf iso
 	rm -f boot/isolinux/linux*
 	# Clean package build dirs
-	@cd linux && make clean
+	@cd linux && ARCH=x86 make clean
 	@cd musl && make clean
 	@cd busybox && make clean
 	@cd bash && make distclean
-	@cd python && make distclean
 	echo "Clean ok"
 
 kernel: 
