@@ -85,15 +85,12 @@ else ifeq ($(TARGET), x86_64)
 	cd linux/	; \
 	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 
-else ifeq ($(TARGET), i486)	
+else ifeq ($(TARGET), i486)
 	cp ./configs/linux/4.x/.config-i486 linux/.config
-	cd linux/	; \
-ifdef OPTIMIZE
+	cd linux/ && \
 	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- \
-	KCFLAGS="-mregparm=3 -fomit-frame-pointer -fno-asynchronous-unwind-tables -falign-functions=1 -falign-jumps=1 -falign-loops=1 -fno-inline-small-functions -fno-caller-saves -fno-tree-loop-optimize -finline-limit=3" \
+	$(if $(filter 1,$(OPTIMIZE)),KCFLAGS="-mregparm=3 -fomit-frame-pointer -fno-asynchronous-unwind-tables -falign-functions=1 -falign-jumps=1 -falign-loops=1 -fno-inline-small-functions -fno-caller-saves -fno-tree-loop-optimize -finline-limit=3",) \
 	-j$(JOBS) bzImage
-else
-	$(MAKE) ARCH=x86 CROSS_COMPILE=$(TARGET)-linux-musl- -j$(JOBS) bzImage
 endif
 
 kernel-modules:
